@@ -1,27 +1,31 @@
 /* ==============================
-   Overall Container
-============================== */
+   Doctor Page Styling (Enhanced)
+   ============================== */
+
+/* Overall Container */
 .doctor-container {
-  padding: 30px 20px 60px;
+  margin-top: 0;
+  /* Added margin from above */
+  padding: 0 20px 60px;
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(180deg, #f5f9fc 0%, #eaf4fb 100%);
   min-height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 35px;
+  gap: 24px;
   animation: fadeIn 0.8s ease-in-out;
 }
 
 /* Page Heading */
 .doctor-container h2 {
-  color: #0456c1; /* dark blue from gradient */
+  color: #0456c1;
   font-size: 1.9rem;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 10px;
   letter-spacing: 0.4px;
   text-shadow: 0 1px 2px rgba(4, 86, 193, 0.15);
+  margin-bottom: 5px;
 }
 
 /* Doctor Card */
@@ -29,7 +33,8 @@
   background: linear-gradient(145deg, #ffffff, #f2f9fc);
   border-radius: 14px;
   border: 1px solid rgba(200, 220, 230, 0.7);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06),
+    0 2px 6px rgba(0, 0, 0, 0.03);
   padding: 25px 30px;
   max-width: 850px;
   width: 100%;
@@ -38,7 +43,7 @@
   overflow: hidden;
 }
 
-/* Soft radial accent */
+/* Accent Gradient (top-right soft glow) */
 .doctor-card::before {
   content: "";
   position: absolute;
@@ -50,9 +55,11 @@
   z-index: 0;
 }
 
+/* Hover Lift */
 .doctor-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.05);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08),
+    0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 /* Doctor Info Layout */
@@ -64,7 +71,7 @@
   z-index: 1;
 }
 
-/* Left section (name + specialty) */
+/* Left section (Name + Specialty) */
 .doctor-card .doctor-info div:first-child {
   display: flex;
   flex-direction: column;
@@ -84,6 +91,33 @@
   opacity: 0.9;
 }
 
+.doctor-card .doctor-info .doctor-phone {
+  font-size: 0.9rem;
+  color: #26c6da;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* Right block (buttons) — keep it predictable */
+.doctor-card .doctor-info>div:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Button group for multiple buttons */
+.button-group {
+  display: flex-end;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Ensure links inside card don't get default link styling */
+.doctor-card a {
+  text-decoration: none;
+  display: inline-block;
+}
+
 /* Book Appointment Button */
 .doctor-card button {
   background: linear-gradient(90deg, #0456c1 0%, #26c6da 100%);
@@ -96,6 +130,7 @@
   cursor: pointer;
   transition: all 0.25s ease;
   box-shadow: 0 4px 12px rgba(4, 86, 193, 0.3);
+  align-self: flex-end;
 }
 
 .doctor-card button:hover {
@@ -104,45 +139,217 @@
   box-shadow: 0 6px 16px rgba(4, 86, 193, 0.35);
 }
 
-/* Animations */
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
+.doctor-card button:active {
+  transform: translateY(-1px) scale(.998);
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
+/* Chat Button */
+.doctor-card .chat-btn {
+  background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+  color: #fff;
+  padding: 10px 26px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  position: relative;
+  /* Ensure relative positioning for badge */
+}
+
+.doctor-card .chat-btn:hover {
+  background: linear-gradient(90deg, #218838 0%, #1aa085 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.35);
+}
+
+.doctor-card .chat-btn:active {
+  transform: translateY(-1px) scale(.998);
+}
+
+/* Unread Count Badge */
+.unread-count-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff5a5f;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: bold;
+  line-height: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Focus effect (for accessibility) */
+.doctor-card button:focus {
+  outline: 2px solid rgba(38, 198, 218, 0.5);
+  outline-offset: 3px;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==============================
+   Responsive Design
+   ============================== */
+
+/* Desktop */
+@media screen and (min-width: 1024px) {
+  .doctor-container {
+    padding: 0 40px 80px;
+    gap: 45px;
+    margin: 0;
+  }
+
+  .doctor-container h2 {
+    font-size: 2.2rem;
+  }
+
+  .doctor-card {
+    padding: 35px 40px;
+    max-width: 950px;
+  }
+
+  .doctor-card .doctor-info .doctor-name {
+    font-size: 1.25rem;
+  }
+
+  .doctor-card .doctor-info .doctor-specialty {
+    font-size: 1.05rem;
+  }
+
+  .doctor-card button {
+    padding: 14px 32px;
+    font-size: 16px;
+    min-width: 160px;
+  }
+}
+
+/* Tablets */
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  .doctor-container {
+    padding: 0 25px 60px;
+    gap: 35px;
+  }
+
+  .doctor-card .doctor-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .button-group {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .doctor-card button {
+    width: 100%;
+    padding: 12px 28px;
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .doctor-container h2 {
+    font-size: 1.8rem;
+  }
+
+  .doctor-card {
+    padding: 28px 32px;
+  }
+}
+
+/* Small Tablets */
+@media screen and (max-width: 767px) and (min-width: 481px) {
+  .doctor-container {
+    padding: 0 20px 50px;
+    gap: 30px;
+    margin-top: 0;
+  }
+
   .doctor-card .doctor-info {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
 
+  .button-group {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .doctor-card button {
     width: 100%;
+    padding: 11px 24px;
+    font-size: 14px;
     text-align: center;
   }
 
   .doctor-container h2 {
-    font-size: 1.6rem;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .doctor-container {
-    padding: 20px 10px 40px;
-    gap: 25px;
+    font-size: 1.7rem;
   }
 
   .doctor-card {
-    padding: 20px 18px;
+    padding: 24px 28px;
+  }
+}
+
+/* Mobile Devices */
+@media screen and (max-width: 480px) {
+  .doctor-container {
+    padding: 0 15px 45px;
+    gap: 28px;
+    margin-top: 10px;
+  }
+
+  .doctor-card {
+    padding: 22px 20px;
   }
 
   .doctor-card .doctor-info .doctor-name {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   .doctor-card .doctor-info .doctor-specialty {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+  }
+
+  .doctor-card .doctor-info>div:last-child {
+    align-self: flex-end;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .doctor-card button {
+    width: auto;
+    padding: 12px 22px;
+    font-size: 14px;
+
+  }
+
+  .doctor-container h2 {
+    margin-top: 40px;
+    font-size: 1.7rem;
   }
 }

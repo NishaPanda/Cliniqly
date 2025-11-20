@@ -2,7 +2,7 @@
 .login-container {
   width: 400px;
   max-width: 90%;
-  margin: 150px auto 60px; /* Top margin increased to create gap below navbar */
+  margin: 20px auto 60px; /* Top margin increased to create gap below navbar */
   padding: 30px;
   background: linear-gradient(145deg, #ffffff, #eaf6fc); /* soft white → light cyan */
   border-radius: 12px;

@@ -17,6 +17,8 @@ const userSchema = new mongoose.Schema({
     required: true },
   specialization: { 
     type: String },  // optional for doctors
+  phoneNumber: { 
+    type: String },  // optional phone number for doctors
   age: { 
     type: Number },             // optional for patients
   gender: { 

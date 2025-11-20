@@ -1,0 +1,144 @@
+.doctor-chat-page {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+.chat-page-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.chat-page-header h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.chat-page-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.participants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.participant-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.participant-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-color: #e0e0e0;
+}
+
+.participant-avatar {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #00bfa5, #0092bf);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.participant-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.participant-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.unread-badge {
+  background-color: #ff5a5f;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.participant-role {
+  font-size: 12px;
+  color: #888;
+  text-transform: capitalize;
+  margin-bottom: 4px;
+}
+
+.last-active {
+  font-size: 12px;
+  color: #00bfa5;
+}
+
+.chat-action-btn {
+  background: #f0f2f5;
+  color: #333;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.participant-card:hover .chat-action-btn {
+  background: #00bfa5;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .doctor-chat-page {
+    padding: 20px;
+  }
+
+  .participants-grid {
+    grid-template-columns: 1fr;
+  }
+}

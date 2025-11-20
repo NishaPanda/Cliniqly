@@ -1,6 +1,7 @@
 // src/pages/Home.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Testimonials from '../components/Testimonials';
 import './Home.css';
 
 export default function Home() {
@@ -15,7 +16,7 @@ export default function Home() {
         </p>
         <div style={{marginTop: 12}}>
           {user && user.role && String(user.role).toLowerCase() === 'doctor' ? (
-            <Link to="/profile"><button>My Patients</button></Link>
+            <Link to="/patients"><button>My Patients</button></Link>
           ) : (
             <Link to="/doctors"><button>Find doctors</button></Link>
           )}
@@ -25,13 +26,19 @@ export default function Home() {
       <div className="home-card">
         <h2>Book Appointments. Save Time. Stay Healthy.</h2>
         <h5>What we offer?</h5>
-        <p className="small">
-          Easily manage your healthcare appointments with our intuitive online system. 
-          Patients can quickly book appointments with available doctors, view their booking details, and receive instant digital receipts. 
-          Doctors can efficiently manage their schedules, track patient appointments, and ensure smooth clinic operations. 
-          Our platform simplifies appointment management, reduces waiting times, and enhances the overall healthcare experience.
+        <p className="medium">
+          Manage your healthcare appointments with ease. Patients can book doctors, track appointments, chat in real time, and receive instant digital receipts. Doctors can manage schedules, monitor visits, reply through the chat system, and view real-time patient feedback—ensuring smooth clinic operations, reduced waiting time, and an improved overall experience.
         </p>
       </div>
+
+      <Testimonials />
+
+      <footer className="home-footer">
+        <p className="footer-email">
+          <a href="mailto:support@healthhub.com">support@healthhub.com</a>
+        </p>
+        <p className="footer-copyright">© 2025 Health Hub. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

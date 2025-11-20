@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./NavBar.css";
-import { fetchDoctorAppointments } from '../api';
+import { fetchDoctorAppointments, fetchChatParticipants } from '../api';
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +9,14 @@ export default function NavBar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [patientsOpen, setPatientsOpen] = useState(false);
   const [nextAppointments, setNextAppointments] = useState([]);
+  const [chatDropdownOpen, setChatDropdownOpen] = useState(false);
+  const [chatParticipants, setChatParticipants] = useState([]);
   const navigate = useNavigate();
+
+  // refs for focus management
+  const dropdownRef = useRef(null);
+  const patientsRef = useRef(null);
+  const chatDropdownRef = useRef(null);
 
   // ✅ Check login status from localStorage
   useEffect(() => {
@@ -44,24 +51,77 @@ export default function NavBar() {
           setNextAppointments((list || []).slice(0, 5));
         })
         .catch(err => console.error('Failed to load doctor appointments', err));
+
+      fetchChatParticipants()
+        .then(data => {
+          if (!mounted) return;
+          setChatParticipants((data.participants || []).slice(0, 5));
+        })
+        .catch(err => console.error('Failed to load chat participants', err));
     } else {
       setNextAppointments([]);
     }
     return () => { mounted = false; };
   }, [user]);
 
-  // ✅ Close dropdown when clicking outside
+  // ===============================
+  // Lock body scroll when menus are open
+  // ===============================
   useEffect(() => {
-    const onDocClick = (e) => {
-      if (!e.target.closest('.profile-dropdown')) setDropdownOpen(false);
+    const body = document.body;
+    if (patientsOpen || dropdownOpen || chatDropdownOpen) {
+      body.classList.add("no-scroll");
+    } else {
+      body.classList.remove("no-scroll");
+    }
+    return () => body.classList.remove("no-scroll");
+  }, [patientsOpen, dropdownOpen, chatDropdownOpen]);
+
+  // ===============================
+  // Focus first element inside menu when it opens
+  // ===============================
+  useEffect(() => {
+    if (dropdownOpen && dropdownRef.current) {
+      const first = dropdownRef.current.querySelector("button, [tabindex='0'], a, input, [role='menuitem']");
+      if (first && typeof first.focus === "function") first.focus();
+    }
+  }, [dropdownOpen]);
+
+  useEffect(() => {
+    if (patientsOpen && patientsRef.current) {
+      const first = patientsRef.current.querySelector("button, [tabindex='0'], a, .patient-item");
+      if (first && typeof first.focus === "function") first.focus();
+    }
+  }, [patientsOpen]);
+
+  // ===============================
+  // Close menus when clicking outside (single handler)
+  // ===============================
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      // if click is outside profile-dropdown, close profile dropdown
+      if (!e.target.closest('.profile-dropdown')) {
+        setDropdownOpen(false);
+      }
+      // if click is outside patients-dropdown, close patients menu
+      if (!e.target.closest('.patients-dropdown')) {
+        setPatientsOpen(false);
+      }
+      // if click is outside chat-dropdown, close chat menu
+      if (!e.target.closest('.chat-dropdown')) {
+        setChatDropdownOpen(false);
+      }
     };
-    document.addEventListener('click', onDocClick);
-    return () => document.removeEventListener('click', onDocClick);
+
+    // use mousedown so it fires before other click handlers (helps prevent race)
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // ✅ Logout handler
   const handleLogout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
     window.dispatchEvent(new Event("storage"));
     navigate("/login");
@@ -93,7 +153,7 @@ export default function NavBar() {
           Home
         </NavLink>
         {user && user.role && String(user.role).toLowerCase() === 'doctor' ? (
-          <NavLink to="/profile" className={({ isActive }) => (isActive ? "active" : "")}>
+          <NavLink to="/patients" className={({ isActive }) => (isActive ? "active" : "")}>
             My Patients
           </NavLink>
         ) : (
@@ -120,24 +180,73 @@ export default function NavBar() {
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}>
             {user?.role === 'doctor' && (
-              <div className="patients-dropdown" onClick={(e) => { e.stopPropagation(); setPatientsOpen(!patientsOpen); }}>
+              <div
+                className="patients-dropdown"
+                onClick={(e) => { e.stopPropagation(); setPatientsOpen(!patientsOpen); }}
+              >
                 <div className="patients-icon" style={{ cursor: 'pointer' }}>👥</div>
                 <div className="patients-badge">{nextAppointments.length}</div>
+
                 {patientsOpen && (
-                  <div className="patients-menu" style={{ color: "black" }}>
+                  <div className="patients-menu" ref={patientsRef} style={{ color: "black" }}>
                     <div className="patients-header">Upcoming Patients</div>
+
                     {nextAppointments.length === 0 ? (
-                      <div className="patient-item">No upcoming appointments</div>
+                      <div className="patient-item" tabIndex={0}>No upcoming appointments</div>
                     ) : (
                       nextAppointments.map(a => (
-                        <div key={a._id} className="patient-item" onClick={() => { navigate(`/receipt/${a._id}`); setPatientsOpen(false); }}>
+                        <div
+                          key={a._id}
+                          className="patient-item"
+                          tabIndex={0}
+                          onClick={() => { navigate(`/receipt/${a._id}`); setPatientsOpen(false); }}
+                        >
                           <div className="patient-name">{a.patientName || 'Unknown'}</div>
                           <div className="patient-time">{a.date ? a.date.split('T')[0] : ''} {a.time || ''}</div>
                         </div>
                       ))
                     )}
+
                     <div className="patients-footer">
-                      <button onClick={() => { navigate('/profile'); setPatientsOpen(false); }}>View all</button>
+                      <button onClick={() => { navigate('/appointments'); setPatientsOpen(false); }}>View all</button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {user?.role === 'doctor' && (
+              <div
+                className="chat-dropdown"
+                onClick={(e) => { e.stopPropagation(); setChatDropdownOpen(!chatDropdownOpen); }}
+              >
+                <div className="chat-icon" style={{ cursor: 'pointer', fontSize: '20px' }}>💬</div>
+                {chatParticipants.length > 0 && <div className="patients-badge">{chatParticipants.length}</div>}
+
+                {chatDropdownOpen && (
+                  <div className="patients-menu" ref={chatDropdownRef} style={{ color: "black", right: "60px" }}>
+                    <div className="patients-header">Recent Chats</div>
+
+                    {chatParticipants.length === 0 ? (
+                      <div className="patient-item" tabIndex={0}>No recent chats</div>
+                    ) : (
+                      chatParticipants.map(p => (
+                        <div
+                          key={p._id}
+                          className="patient-item"
+                          tabIndex={0}
+                          onClick={() => { navigate('/doctor-chat', { state: { selectedPatientId: p._id } }); setChatDropdownOpen(false); }}
+                        >
+                          <div className="patient-name">{p.name || 'Unknown'}</div>
+                          <div className="patient-time">
+                            {p.lastMessageTime ? new Date(p.lastMessageTime).toLocaleDateString() : ''}
+                          </div>
+                        </div>
+                      ))
+                    )}
+
+                    <div className="patients-footer">
+                      <button onClick={() => { navigate('/doctor-chat'); setChatDropdownOpen(false); }}>View All</button>
                     </div>
                   </div>
                 )}
@@ -145,11 +254,15 @@ export default function NavBar() {
             )}
 
             <div className="profile-dropdown">
-              <div className="profile-icon" onClick={() => setDropdownOpen(!dropdownOpen)}>
+              <div
+                className="profile-icon"
+                onClick={(e) => { e.stopPropagation(); setDropdownOpen(!dropdownOpen); }}
+              >
                 👤 {user && user.name ? user.name.split(" ")[0] : "User"}
               </div>
+
               {dropdownOpen && (
-                <div className="dropdown-menu">
+                <div className="dropdown-menu" ref={dropdownRef}>
                   <button onClick={goToProfile}>Profile</button>
                   <button onClick={handleLogout}>Logout</button>
                 </div>

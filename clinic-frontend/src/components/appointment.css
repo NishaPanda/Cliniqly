@@ -1,8 +1,13 @@
 /* ==============================
+   Appointments.css (Enhanced / Doctor-style)
+   — variables removed earlier
+   ============================== */
+
+/* ==============================
    Container
-============================== */
+   ============================== */
 .appointments-container {
-  padding: 30px 20px 60px;
+  margin-top: 0;
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(180deg, #f5f9fc 0%, #eaf4fb 100%);
   min-height: calc(100vh - 70px);
@@ -15,19 +20,21 @@
 
 /* Page Heading */
 .appointments-container h2 {
-  color: #0456c1; /* dark blue from gradient */
-  font-size: 1.9rem;
-  font-weight: 600;
+  color: #0456c1;
+  font-size: 1.8rem;
+  font-weight: 550;
   text-align: center;
   margin-bottom: 10px;
   letter-spacing: 0.4px;
   text-shadow: 0 1px 2px rgba(4, 86, 193, 0.15);
 }
 
-/* Fade-in Animations */
+/* ==============================
+   Animations
+   ============================== */
 @keyframes fadeInContainer {
   from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeInUp {
@@ -36,13 +43,14 @@
 }
 
 /* ==============================
-   Appointment Card
-============================== */
+   Appointment Card (Doctor-style)
+   ============================== */
 .appointment-card {
   background: linear-gradient(145deg, #ffffff, #f2f9fc);
   border-radius: 14px;
   border: 1px solid rgba(200, 220, 230, 0.6);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06),
+              0 2px 6px rgba(0, 0, 0, 0.03);
   padding: 25px 30px;
   width: 100%;
   max-width: 850px;
@@ -51,9 +59,13 @@
   opacity: 0;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 0;
 }
 
-/* Subtle radial glow */
+/* Accent radial glow */
 .appointment-card::before {
   content: "";
   position: absolute;
@@ -61,47 +73,127 @@
   right: 0;
   width: 120px;
   height: 120px;
-  background: radial-gradient(circle at top right, rgba(4, 86, 193, 0.08), transparent 70%);
+  background: radial-gradient(circle at top right, rgba(4,86,193,0.08), transparent 70%);
   z-index: 0;
 }
 
+/* Hover Lift */
 .appointment-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.05);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08),
+              0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Appointment Info */
+/* ==============================
+   Appointment Info Layout
+   ============================== */
 .appointment-card .appointment-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 18px;
   position: relative;
   z-index: 1;
 }
 
-.appointment-card .appointment-info div:first-child {
+/* Left block */
+.appointment-card .appointment-info .left {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
-.appointment-card .appointment-info .patient-doctor {
+.patient-doctor {
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #0456c1;
-  letter-spacing: 0.3px;
 }
 
-.appointment-card .appointment-info .appointment-date,
-.appointment-card .appointment-info .appointment-booked {
+.appointment-date,
+.appointment-booked {
   font-size: 0.95rem;
   color: #1e99c3;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
-/* Receipt Button */
+/* Right block */
+.appointment-card .appointment-info .right {
+  display: flex;
+  flex-direction: column;  /* updated earlier */
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* Time pill */
+.appointment-time {
+  background: linear-gradient(90deg, rgba(4,86,193,0.08), rgba(38,198,218,0.06));
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+  color: #0456c1;
+  font-size: 0.95rem;
+}
+
+/* Status */
+.status-pill {
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.status-pill.confirmed { background: linear-gradient(90deg, #0456c1, #26c6da); }
+.status-pill.pending   { background: linear-gradient(90deg, #ffb74d, #ff8a65); }
+.status-pill.cancelled { background: linear-gradient(90deg, #9e9e9e, #616161); }
+
+/* ==============================
+   BUTTON FIX (ONLY MODIFIED PART)
+   ============================== */
+
+/* Unified primary button */
 .appointment-card button {
   background: linear-gradient(90deg, #0456c1 0%, #26c6da 100%);
+  color: #fff;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.20s ease, box-shadow 0.20s ease, opacity 0.12s ease;
+  box-shadow: 0 6px 14px rgba(4,86,193,0.18);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+/* Button Group Fix */
+.appointment-actions {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.appointment-actions button {
+  margin: 0;
+}
+
+/* Cancel button consistency */
+.appointment-actions .cancel,
+.appointment-actions button.cancel {
+  background: linear-gradient(90deg, #1e99c3 0%, #26c6da 100%);
+  color: #fff;
+}
+
+/* Chat Button */
+.appointment-card .chat-btn {
+  background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
   color: #fff;
   padding: 10px 26px;
   font-size: 14px;
@@ -110,16 +202,43 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(4, 86, 193, 0.3);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
 }
 
-.appointment-card button:hover {
-  background: linear-gradient(90deg, #0348a1 0%, #1e99c3 100%);
+.appointment-card .chat-btn:hover {
+  background: linear-gradient(90deg, #218838 0%, #1aa085 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(4, 86, 193, 0.35);
+  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.35);
 }
 
-/* Empty State Message */
+.appointment-card .chat-btn:active {
+  transform: translateY(-1px) scale(.998);
+}
+
+/* Hover */
+.appointment-card button:hover {
+  transform: translateY(-2px);
+  opacity: 0.98;
+  box-shadow: 0 8px 18px rgba(4,86,193,0.26);
+}
+
+/* Mobile: full width buttons */
+@media screen and (max-width: 767px) {
+  .appointment-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .appointment-card button {
+    width: 100%;
+    min-width: unset;
+    padding: 12px 16px;
+  }
+}
+
+/* ==============================
+   Empty State
+   ============================== */
 .no-appointments {
   text-align: center;
   color: #0456c1;
@@ -127,44 +246,119 @@
 }
 
 .no-appointments h3 {
+  margin-top: 100px;
   margin-bottom: 8px;
   font-weight: 600;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
+/* ==============================
+   Responsive
+   ============================== */
+
+/* Desktop */
+@media screen and (min-width: 1024px) {
+  .appointments-container {
+    padding: 0 40px 80px;
+    gap: 45px;
+  }
+  .appointments-container h2 {
+    margin-top: 20px;
+    font-size: 2.2rem;
+  }
+  .appointment-card {
+    padding: 35px 40px;
+    max-width: 950px;
+  }
+  .appointment-card button {
+    padding: 14px 32px;
+    font-size: 16px;
+    min-width: 160px;
+  }
+}
+
+/* Tablets */
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  .appointments-container {
+    padding: 0 25px 60px;
+    gap: 35px;
+  }
+  .appointment-card .appointment-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .appointment-card button {
+    width: 100%;
+    padding: 12px 28px;
+    font-size: 15px;
+    text-align: center;
+  }
+}
+
+/* Small Tablets */
+@media screen and (max-width: 767px) and (min-width: 481px) {
+  .appointments-container {
+    padding: 0 20px 50px;
+    gap: 30px;
+  }
   .appointment-card .appointment-info {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
-
   .appointment-card button {
     width: 100%;
-    text-align: center;
-  }
-
-  .appointments-container h2 {
-    font-size: 1.6rem;
+    padding: 11px 24px;
   }
 }
 
+/* Mobile */
 @media screen and (max-width: 480px) {
   .appointments-container {
-    padding: 20px 10px 40px;
-    gap: 25px;
+    margin-top: 10px;
+    padding: 0 15px 45px;
+    gap: 28px;
   }
-
   .appointment-card {
-    padding: 20px 18px;
+    padding: 22px 20px;
+  }
+  .appointment-card .appointment-info {
+    gap: 12px;
+  }
+  .appointment-card button {
+    width: 100%;
+    display:flex;
+    padding: 10px 20px;
+  }
+  .appointment-card .chat-btn {
+    width: auto;
+    padding: 10px 20px;
+  }
+  .appointment-card a {
+    text-decoration: none;
+  }
+  .appointment-actions {
+  display: inline-flex;
+  gap: 16px;   /* increased spacing between buttons */
+  align-items: center;
+  justify-content: flex-end;
+ }
+ .appointments-container h2 {
+    margin-top: 40px;
+    font-size: 1.7rem;
   }
 
-  .appointment-card .appointment-info .patient-doctor {
-    font-size: 1rem;
-  }
+}
 
-  .appointment-card .appointment-info .appointment-date,
-  .appointment-card .appointment-info .appointment-booked {
-    font-size: 0.85rem;
-  }
+/* ==============================
+   Small utilities
+   ============================== */
+.text-muted {
+  color: rgba(0,0,0,0.55);
+  font-size: 0.9rem;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

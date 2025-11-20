@@ -4,7 +4,7 @@
 .register-container {
   width: 400px;
   max-width: 90%;
-  margin: 60px auto;
+  margin: 20px auto; /* reduced top gap */
   padding: 30px;
   background: linear-gradient(145deg, #ffffff, #eaf6fc); /* soft white → light cyan */
   border-radius: 12px;
@@ -100,23 +100,28 @@
   color: #26c6da;
 }
 
-/* Row for Age and Gender */
+/* Age + Gender ALWAYS side-by-side */
 .register-row {
   display: flex;
-  gap: 15px;
+  gap: 30px;
+  width: 100%;
 }
 
 .register-row label {
-  flex: 1;
+  flex: 1; /* equal width */
+}
+
+.register-row input,
+.register-row select {
+  width: 100%;
 }
 
 /* Responsive */
 @media screen and (max-width: 480px) {
   .register-container {
     padding: 20px;
+    
   }
 
-  .register-row {
-    flex-direction: column;
-  }
+  /* Removed stacking — fields always stay in one row */
 }

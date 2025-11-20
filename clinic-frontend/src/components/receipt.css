@@ -1,25 +1,49 @@
-/* Receipt.css */
+/* ==============================
+   Receipt.css (Enhanced + Proper Top Gap)
+   ============================== */
 
-/* Container card */
+/* Theme variables (colors preserved) */
+:root{
+  --bg-start: #f5f9fc;
+  --bg-end:   #eaf4fb;
+  --primary:  #0456c1;
+  --accent:   #26c6da;
+  --accent-alt:#1e99c3;
+  --card-bg-1:#ffffff;
+  --card-bg-2:#f2f9fc;
+  --text-dark:#004c80;
+  --muted-text:#345b7a;
+  --page-top-margin: 80px; /* ✅ Increased gap from top */
+  --max-width: 720px;
+  --radius: 12px;
+  --shadow: 0 8px 20px rgba(0,0,0,0.08);
+  --font-sans: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* ==============================
+   Receipt Container
+   ============================== */
 .receipt-card {
+  box-sizing: border-box;
+  margin: var(--page-top-margin) auto 30px; /* ✅ clear top space */
   width: 100%;
-  max-width: 600px;
-  margin: 20px auto;
+  max-width: var(--max-width);
   padding: 30px;
-  background: linear-gradient(145deg, #ffffff, #f2f9fc); /* subtle white → light cyan */
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(145deg, var(--card-bg-1), var(--card-bg-2)); /* preserved subtle gradient */
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-family: var(--font-sans);
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
   animation: fadeInUp 0.6s ease forwards;
   opacity: 0;
   position: relative;
   overflow: hidden;
+  color: var(--text-dark);
 }
 
-/* Subtle radial accent */
+/* Radial Accent (same as before) */
 .receipt-card::before {
   content: "";
   position: absolute;
@@ -27,34 +51,80 @@
   right: 0;
   width: 100px;
   height: 100px;
-  background: radial-gradient(circle at top right, rgba(4, 86, 193, 0.1), transparent 70%);
+  background: radial-gradient(circle at top right, rgba(4,86,193,0.1), transparent 70%);
   z-index: 0;
+  pointer-events: none;
 }
 
 .receipt-card * { position: relative; z-index: 1; }
 
-/* Headings */
+/* ==============================
+   Header
+   ============================== */
 .receipt-card h3 {
-  color: #0456c1; /* dark blue */
+  color: var(--primary);
   text-align: center;
-  margin-bottom: 15px;
-  text-shadow: 0 1px 2px rgba(4, 86, 193, 0.12);
+  margin: 0 0 10px 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(4,86,193,0.12);
 }
 
-/* Info rows */
-.receipt-card div > strong {
-  color: #004c80;
+/* Info Rows */
+.receipt-card .info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
 }
 
-/* Small print text */
+.receipt-card .info dt {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.receipt-card .info dd {
+  margin: 0;
+  color: var(--muted-text);
+  font-size: 0.95rem;
+}
+
+/* Divider */
+.receipt-card .divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(4,86,193,0.06), rgba(4,86,193,0.02));
+  border-radius: 1px;
+  margin: 10px 0;
+}
+
+/* Summary Section */
+.receipt-card .summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.receipt-card .summary .label {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.receipt-card .summary .value {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Small Footer Text */
 .receipt-card .small {
   font-size: 0.85rem;
-  color: #004c80;
+  color: var(--text-dark);
   text-align: center;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
-/* Print button */
+/* ==============================
+   Buttons
+   ============================== */
 .receipt-card button {
   padding: 10px 22px;
   font-size: 14px;
@@ -63,9 +133,10 @@
   border-radius: 8px;
   cursor: pointer;
   color: #fff;
-  background: linear-gradient(90deg, #0456c1 0%, #26c6da 100%);
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 4px 12px rgba(4, 86, 193, 0.3);
+  align-self: flex-start;
 }
 
 .receipt-card button:hover {
@@ -73,28 +144,78 @@
   box-shadow: 0 6px 15px rgba(4, 86, 193, 0.35);
 }
 
-/* Fade-in animation */
+.receipt-card button:focus {
+  outline: 3px solid rgba(38,198,218,0.22);
+  outline-offset: 3px;
+}
+
+/* ==============================
+   Animation
+   ============================== */
 @keyframes fadeInUp {
   0% { opacity: 0; transform: translateY(20px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive adjustments */
-@media screen and (max-width: 480px) {
+@media (prefers-reduced-motion: reduce) {
   .receipt-card {
-    padding: 20px 15px;
-  }
-  .receipt-card button {
-    width: 100%;
+    animation: none;
+    transition: none;
   }
 }
 
-/* Print styles */
+/* ==============================
+   Responsive
+   ============================== */
+@media screen and (max-width: 480px) {
+  :root { --page-top-margin: 60px; } /* slightly smaller gap on mobile */
+
+  .receipt-card {
+    padding: 20px 15px;
+    margin: var(--page-top-margin) 12px 20px;
+  }
+
+  .receipt-card .info {
+    grid-template-columns: 1fr;
+  }
+
+  .receipt-card button {
+    width: 100%;
+    align-self: flex-start;
+    text-align: center;
+  }
+}
+
+/* ==============================
+   Print Styles
+   ============================== */
 @media print {
-  body * { visibility: hidden; }
-  .printable, .printable * { visibility: visible; }
-  .printable { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; }
-  .printable { background: #fff; color: #000; }
-  .receipt-card { box-shadow: none; border-radius: 0; padding: 12mm; }
-  .receipt-card button { display: none; }
+  body * { visibility: hidden !important; }
+  .printable, .printable * { visibility: visible !important; }
+  .printable {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    background: #fff !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 12mm !important;
+    margin: 0 !important;
+  }
+  .receipt-card button { display: none !important; }
+}
+
+/* Utility for accessibility */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
