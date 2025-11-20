@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="home-container">
       <div className="home-card">
-        <h2>Welcome to Clinic Appointment System</h2>
+        <h2>Welcome to Cliniqly</h2>
         <p className="small">
           Book doctor visits, view appointments and get receipts.
         </p>
@@ -35,9 +35,9 @@ export default function Home() {
 
       <footer className="home-footer">
         <p className="footer-email">
-          <a href="mailto:support@healthhub.com">support@healthhub.com</a>
+          <a href="mailto:support@cliniqly.com">support@cliniqly.com</a>
         </p>
-        <p className="footer-copyright">© 2025 Health Hub. All rights reserved.</p>
+        <p className="footer-copyright">© 2025 Cliniqly. All rights reserved.</p>
       </footer>
     </div>
   );

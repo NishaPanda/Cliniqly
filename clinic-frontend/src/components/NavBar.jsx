@@ -136,8 +136,7 @@ export default function NavBar() {
     <nav className="navbar">
       {/* Left Side - Brand */}
       <div className="navbar-brand" onClick={() => navigate("/")}>
-        <span className="brand-health">Health</span>
-        <span className="brand-hub">Hub</span>
+        <span className="brand-health">Cliniqly</span>
       </div>
 
       {/* Hamburger menu for mobile */}
