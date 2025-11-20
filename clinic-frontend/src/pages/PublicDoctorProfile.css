@@ -1,0 +1,254 @@
+/* PublicDoctorProfile.css */
+
+.public-doctor-profile-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.profile-header {
+    margin-bottom: 30px;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: #0456c1;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 16px;
+    margin-bottom: 10px;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+}
+
+.back-button:hover {
+    background-color: #f0f7ff;
+    transform: translateX(-3px);
+}
+
+.profile-header h1 {
+    color: #0456c1;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.doctor-profile-card {
+    background: linear-gradient(145deg, #ffffff, #eaf6fc);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(4, 86, 193, 0.15);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+.doctor-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0456c1, #26c6da);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: bold;
+    margin: 0 auto 30px;
+    box-shadow: 0 4px 12px rgba(4, 86, 193, 0.3);
+}
+
+.doctor-details {
+    margin-bottom: 30px;
+}
+
+.doctor-name {
+    text-align: center;
+    color: #0456c1;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(4, 86, 193, 0.1);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: #0456c1;
+    font-weight: 600;
+    font-size: 1rem;
+    min-width: 150px;
+}
+
+.detail-value {
+    color: #071c61;
+    font-weight: 500;
+    flex: 1;
+    text-align: right;
+}
+
+.phone-link,
+.email-link {
+    color: #26c6da;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.phone-link:hover,
+.email-link:hover {
+    color: #0456c1;
+    text-decoration: underline;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.action-buttons button,
+.action-buttons a button {
+    flex: 1;
+    max-width: 250px;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.book-button {
+    background: linear-gradient(135deg, #0456c1, #26c6da);
+    color: white;
+    box-shadow: 0 4px 12px rgba(4, 86, 193, 0.3);
+}
+
+.book-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(4, 86, 193, 0.4);
+}
+
+.back-to-list-button {
+    background: white;
+    color: #0456c1;
+    border: 2px solid #0456c1;
+}
+
+.back-to-list-button:hover {
+    background: #0456c1;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.loading-state,
+.error-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.error-state h2 {
+    color: #f44336;
+    margin-bottom: 15px;
+}
+
+.error-state p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.error-state button {
+    background: #0456c1;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.error-state button:hover {
+    background: #034a9e;
+    transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .public-doctor-profile-container {
+        padding: 15px;
+        margin: 20px auto;
+    }
+
+    .doctor-profile-card {
+        padding: 25px;
+    }
+
+    .profile-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .doctor-name {
+        font-size: 1.5rem;
+    }
+
+    .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .detail-label {
+        min-width: auto;
+    }
+
+    .detail-value {
+        text-align: left;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-buttons button,
+    .action-buttons a button {
+        max-width: none;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .doctor-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 40px;
+    }
+
+    .doctor-profile-card {
+        padding: 20px;
+    }
+}

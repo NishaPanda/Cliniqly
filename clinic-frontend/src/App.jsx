@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import DoctorChat from './pages/DoctorChat';
+import PublicDoctorProfile from './pages/PublicDoctorProfile';
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/doctors" element={<DoctorList />} />
+          <Route path="/doctor/:doctorId" element={<PublicDoctorProfile />} />
           <Route path="/book/:doctorId?" element={<BookingForm />} />
           <Route path="/appointments" element={<MyAppointments />} />
           <Route path="/patients" element={<DoctorPatients />} />

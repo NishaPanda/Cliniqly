@@ -11,6 +11,22 @@ exports.getDoctors = async (req, res) => {
   }
 };
 
+// Fetch a single doctor by ID
+exports.getDoctorById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const doctor = await User.findById(id).select("-password");
+
+    if (!doctor || doctor.role !== "doctor") {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    res.status(200).json(doctor);
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
 // Book an appointment with a doctor
 exports.bookDoctor = async (req, res) => {
   try {

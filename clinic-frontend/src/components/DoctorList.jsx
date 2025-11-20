@@ -1,6 +1,6 @@
 // src/components/DoctorList.jsx
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config';
 import Chat from './Chat';
@@ -10,6 +10,7 @@ export default function DoctorList() {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [chatModal, setChatModal] = useState({ isOpen: false, doctorId: null, doctorName: '' });
+  const navigate = useNavigate();
 
   const fetchDoctors = async () => {
     try {
@@ -47,7 +48,8 @@ export default function DoctorList() {
     fetchDoctors();
   }, []);
 
-  const handleOpenChat = (doctorId, doctorName) => {
+  const handleOpenChat = (e, doctorId, doctorName) => {
+    e.stopPropagation(); // Prevent card click
     if (localStorage.getItem('token')) {
       setChatModal({ isOpen: true, doctorId, doctorName });
     } else {
@@ -61,27 +63,50 @@ export default function DoctorList() {
     fetchDoctors();
   };
 
+  const handleCardClick = (doctorId) => {
+    navigate(`/doctor/${doctorId}`);
+  };
+
   if (loading) return <div className="">Loading doctors...</div>;
 
   return (
     <div className="doctor-container">
       <h2>Doctors</h2>
       {doctors.map(d => (
-        <div key={d._id} className="doctor-card">
+        <div
+          key={d._id}
+          className="doctor-card"
+          onClick={() => handleCardClick(d._id)}
+        >
           <div className="doctor-info">
             <div>
               <div className="doctor-name">{d.name}</div>
               <div className="doctor-specialty">{d.specialization || d.specialty}</div>
-              {d.phoneNumber && <div className="doctor-phone">📞 {d.phoneNumber}</div>}
+              {d.phoneNumber && (
+                <div className="doctor-phone">
+                  <a
+                    href={`tel:${d.phoneNumber}`}
+                    style={{ color: 'inherit', textDecoration: 'none' }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    📞 {d.phoneNumber}
+                  </a>
+                </div>
+              )}
             </div>
             <div className="button-group">
               {/* Open Chat Modal */}
-              <button className="chat-btn" onClick={() => handleOpenChat(d._id, d.name)}>
+              <button className="chat-btn" onClick={(e) => handleOpenChat(e, d._id, d.name)}>
                 Chat
                 {d.unreadCount > 0 && <span className="unread-count-badge">{d.unreadCount}</span>}
               </button>
               {/* Navigate to Booking Page */}
-              <Link to={localStorage.getItem('token') ? `/book/${d._id}` : '/login'}><button>Book</button></Link>
+              <Link
+                to={localStorage.getItem('token') ? `/book/${d._id}` : '/login'}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button>Book</button>
+              </Link>
             </div>
           </div>
         </div>

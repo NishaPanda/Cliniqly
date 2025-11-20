@@ -54,6 +54,8 @@ export default function DoctorChat() {
         setChatModal({ isOpen: false, patientId: null, patientName: '' });
         // Refresh participants when chat closes to update last message time
         fetchParticipants();
+        // Notify navbar to update chat count
+        window.dispatchEvent(new Event('chat-read'));
     };
 
     return (

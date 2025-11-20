@@ -25,12 +25,12 @@ const Chat = ({ isOpen, onClose, otherUserId, otherUserName }) => {
 
   // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
   };
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, loading, isOpen]);
 
   // Initialize socket connection
   useEffect(() => {
@@ -79,6 +79,22 @@ const Chat = ({ isOpen, onClose, otherUserId, otherUserName }) => {
     }
   }, [isOpen]);
 
+  // Prevent background scrolling when chat is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+      document.documentElement.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      document.documentElement.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const loadChatHistory = async () => {
     try {
       setLoading(true);
@@ -91,6 +107,9 @@ const Chat = ({ isOpen, onClose, otherUserId, otherUserName }) => {
       await axios.put(`${API_BASE}/chat/${otherUserId}/read`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
+
+      // Dispatch custom event to notify navbar to update chat count
+      window.dispatchEvent(new CustomEvent('chat-read', { detail: { userId: otherUserId } }));
     } catch (error) {
       console.error('Error loading chat history:', error);
     } finally {

@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { fetchDoctorAppointments } from '../api';
 import axios from 'axios';
 import { API_BASE } from '../config';
-import dayjs from 'dayjs';
 
 export default function DoctorProfile() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
-  const [appointments, setAppointments] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({ name: '', email: '' });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let mounted = true;
-
-    // Fetch appointments
-    fetchDoctorAppointments()
-      .then(setAppointments)
-      .catch(err => console.error(err));
 
     // Fetch latest profile
     (async () => {
@@ -41,7 +33,15 @@ export default function DoctorProfile() {
   }, []);
 
   const handleEdit = () => {
-    setEditData({ name: user.name, email: user.email, phoneNumber: user.phoneNumber || '' });
+    setEditData({
+      name: user.name,
+      email: user.email,
+      phoneNumber: user.phoneNumber || '',
+      specialization: user.specialization || '',
+      clinicName: user.clinicName || '',
+      clinicAddress: user.clinicAddress || '',
+      doctorId: user.doctorId || ''
+    });
     setIsEditing(true);
   };
 
@@ -195,34 +195,7 @@ export default function DoctorProfile() {
           display: inline-block;
         }
 
-        .appointments-list {
-          margin-top: 15px;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
 
-        .appointment-card {
-          max-width: 90%;
-          background: linear-gradient(145deg, #e0f7fa, #f0fcff);
-          border-radius: 10px;
-          padding: 14px 18px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-          border-left: 4px solid #0456c1;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .appointment-card:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
-        }
-
-        .no-appointments {
-          color: #004d52;
-          font-style: italic;
-          text-align: center;
-          opacity: 0.85;
-        }
 
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
@@ -276,9 +249,7 @@ export default function DoctorProfile() {
             padding: 10px 16px;
             font-size: 13px;
           }
-          .appointment-card {
-            max-width: 100%;
-          }
+
         }
       `}</style>
 
@@ -324,15 +295,91 @@ export default function DoctorProfile() {
           <strong>Phone Number:</strong>
           {isEditing ? (
             <input
-              type="tel"
+              type="number"
               name="phoneNumber"
               className="edit-input"
               value={editData.phoneNumber}
               onChange={handleChange}
+              onKeyPress={(e) => {
+                if (!/[0-9]/.test(e.key)) {
+                  e.preventDefault();
+                }
+              }}
+              pattern="[0-9]*"
               placeholder="Enter phone number"
             />
           ) : (
-            <span className="profile-value">{user.phoneNumber || ''}</span>
+            <span className="profile-value">{user.phoneNumber || '—'}</span>
+          )}
+        </div>
+
+        <div className="profile-field">
+          <strong>Specialization:</strong>
+          {isEditing ? (
+            <input
+              type="text"
+              name="specialization"
+              className="edit-input"
+              value={editData.specialization}
+              onChange={handleChange}
+              placeholder="Enter specialization"
+            />
+          ) : (
+            <span className="profile-value">{user.specialization || '—'}</span>
+          )}
+        </div>
+
+        <div className="profile-field">
+          <strong>Clinic Name:</strong>
+          {isEditing ? (
+            <input
+              type="text"
+              name="clinicName"
+              className="edit-input"
+              value={editData.clinicName}
+              onChange={handleChange}
+              placeholder="Enter clinic name"
+            />
+          ) : (
+            <span className="profile-value">{user.clinicName || '—'}</span>
+          )}
+        </div>
+
+        <div className="profile-field">
+          <strong>Clinic Address:</strong>
+          {isEditing ? (
+            <input
+              type="text"
+              name="clinicAddress"
+              className="edit-input"
+              value={editData.clinicAddress}
+              onChange={handleChange}
+              placeholder="Enter clinic address"
+            />
+          ) : (
+            <span className="profile-value">{user.clinicAddress || '—'}</span>
+          )}
+        </div>
+
+        <div className="profile-field">
+          <strong>Doctor ID:</strong>
+          {isEditing ? (
+            <input
+              type="number"
+              name="doctorId"
+              className="edit-input"
+              value={editData.doctorId}
+              onChange={handleChange}
+              onKeyPress={(e) => {
+                if (!/[0-9]/.test(e.key)) {
+                  e.preventDefault();
+                }
+              }}
+              pattern="[0-9]*"
+              placeholder="Enter doctor ID"
+            />
+          ) : (
+            <span className="profile-value">{user.doctorId || '—'}</span>
           )}
         </div>
 
@@ -349,21 +396,7 @@ export default function DoctorProfile() {
           )}
         </div>
 
-        <h3>My Appointments</h3>
-        {appointments.length === 0 ? (
-          <div className="no-appointments">No appointments yet</div>
-        ) : (
-          <div className="appointments-list">
-            {appointments.map((a) => (
-              <div key={a._id} className="appointment-card">
-                <div><strong>Patient:</strong> {a.patientName}</div>
-                <div>
-                  <strong>Date:</strong> {dayjs(a.date).format('YYYY-MM-DD')} at {a.time}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+
       </div>
     </div>
   );

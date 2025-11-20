@@ -43,6 +43,17 @@ export default function NavBar() {
     const userObj = user || (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null);
     const isDoctor = userObj && userObj.role && String(userObj.role).toLowerCase() === 'doctor';
 
+    const loadChatParticipants = () => {
+      if (isDoctor) {
+        fetchChatParticipants()
+          .then(data => {
+            if (!mounted) return;
+            setChatParticipants((data.participants || []).slice(0, 5));
+          })
+          .catch(err => console.error('Failed to load chat participants', err));
+      }
+    };
+
     if (isDoctor) {
       fetchDoctorAppointments()
         .then(list => {
@@ -52,12 +63,19 @@ export default function NavBar() {
         })
         .catch(err => console.error('Failed to load doctor appointments', err));
 
-      fetchChatParticipants()
-        .then(data => {
-          if (!mounted) return;
-          setChatParticipants((data.participants || []).slice(0, 5));
-        })
-        .catch(err => console.error('Failed to load chat participants', err));
+      loadChatParticipants();
+
+      // Listen for chat-read events to update the count
+      const handleChatRead = () => {
+        loadChatParticipants();
+      };
+
+      window.addEventListener('chat-read', handleChatRead);
+
+      return () => {
+        mounted = false;
+        window.removeEventListener('chat-read', handleChatRead);
+      };
     } else {
       setNextAppointments([]);
     }
@@ -220,7 +238,10 @@ export default function NavBar() {
                 onClick={(e) => { e.stopPropagation(); setChatDropdownOpen(!chatDropdownOpen); }}
               >
                 <div className="chat-icon" style={{ cursor: 'pointer', fontSize: '20px' }}>💬</div>
-                {chatParticipants.length > 0 && <div className="patients-badge">{chatParticipants.length}</div>}
+                {(() => {
+                  const unreadCount = chatParticipants.filter(p => p.unreadCount > 0).length;
+                  return unreadCount > 0 && <div className="patients-badge">{unreadCount}</div>;
+                })()}
 
                 {chatDropdownOpen && (
                   <div className="patients-menu" ref={chatDropdownRef} style={{ color: "black", right: "60px" }}>

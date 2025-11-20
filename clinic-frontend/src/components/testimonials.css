@@ -18,8 +18,10 @@
 .testimonials-container::before {
   content: "";
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: radial-gradient(circle at top right, rgba(4, 86, 193, 0.08), transparent 60%);
   z-index: 0;
   transition: opacity 0.4s ease;
@@ -29,7 +31,7 @@
   opacity: 0.25;
 }
 
-.testimonials-container > * {
+.testimonials-container>* {
   position: relative;
   z-index: 1;
 }
@@ -90,6 +92,7 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -253,10 +256,95 @@
   border-color: #0456c1;
 }
 
-.testimonials-list {
-  display: grid;
-  gap: 16px;
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
   margin-top: 24px;
+  justify-content: center;
+  width: 100%;
+}
+
+.carousel-viewport {
+  overflow: hidden;
+  width: 100%;
+  padding: 10px 0;
+  /* Space for shadows */
+}
+
+.carousel-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.testimonial-card-wrapper {
+  box-sizing: border-box;
+  padding: 0 12px;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  color: #0456c1;
+  border: 1px solid rgba(4, 86, 193, 0.2);
+  font-size: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-arrow:hover {
+  background: #0456c1;
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 16px rgba(4, 86, 193, 0.3);
+}
+
+.carousel-arrow-prev {
+  left: -20px;
+}
+
+.carousel-arrow-next {
+  right: -20px;
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(4, 86, 193, 0.2);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.dot.active {
+  background: #0456c1;
+  width: 24px;
+  border-radius: 5px;
+}
+
+.dot:hover {
+  background: rgba(4, 86, 193, 0.6);
 }
 
 .testimonial-card {
@@ -436,6 +524,7 @@
     max-width: 100%;
   }
 }
+
 /* ---------- Mobile fixes: prevent overflow / out-of-box layout ---------- */
 /* Add at end of CSS (mobile-first overrides) */
 @media screen and (max-width: 480px) {
@@ -448,10 +537,12 @@
 
   /* force container to never exceed viewport width and center it */
   .testimonials-container {
-    max-width: 420px;       /* slightly smaller than 100% to respect padding */
+    max-width: 420px;
+    /* slightly smaller than 100% to respect padding */
     width: calc(100% - 16px);
     margin: 12px auto;
-    padding: 18px 12px;     /* tighter padding on very small screens */
+    padding: 18px 12px;
+    /* tighter padding on very small screens */
     overflow: visible;
     border-radius: 12px;
   }
@@ -467,9 +558,11 @@
   /* Make cards responsive and avoid internal overflow */
   .testimonial-card {
     width: 100%;
-    min-width: 0;            /* important to allow flex items to shrink */
+    min-width: 0;
+    /* important to allow flex items to shrink */
     word-wrap: break-word;
-    overflow: hidden;        /* clip any accidental overflow */
+    overflow: hidden;
+    /* clip any accidental overflow */
     padding: 14px;
   }
 
@@ -527,8 +620,22 @@
   }
 
   /* safe guard: prevent the whole page from horizontal scroll if something still grows */
-  html, body {
+  html,
+  body {
     overflow-x: hidden;
   }
 }
 
+@media screen and (max-width: 768px) {
+  .carousel-arrow {
+    display: none;
+  }
+
+  .testimonial-card-wrapper {
+    padding: 0 8px;
+  }
+
+  .carousel-dots {
+    margin-top: 16px;
+  }
+}

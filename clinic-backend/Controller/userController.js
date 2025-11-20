@@ -29,7 +29,7 @@ exports.updateProfile = async (req, res) => {
 			return res.status(401).json({ message: 'Unauthorized: Missing user ID' });
 		}
 
-		const { name, email, password, specialization, phoneNumber, age, gender } = req.body;
+		const { name, email, password, specialization, phoneNumber, clinicName, clinicAddress, doctorId, age, gender } = req.body;
 		const user = await User.findById(userId);
 		if (!user) {
 			return res.status(404).json({ message: 'User not found' });
@@ -69,13 +69,24 @@ exports.updateProfile = async (req, res) => {
 			}
 		}
 
-		// 🔹 Role-specific updates
-		if (user.role === 'doctor' && specialization) {
-			user.specialization = specialization;
+		// 🔹 Role-specific updates for doctors
+		if (user.role === 'doctor') {
+			if (specialization !== undefined) user.specialization = specialization;
+			if (phoneNumber !== undefined) user.phoneNumber = phoneNumber;
+			if (clinicName !== undefined) user.clinicName = clinicName;
+			if (clinicAddress !== undefined) user.clinicAddress = clinicAddress;
+
+			// Check if doctorId is being changed and if the new ID already exists
+			if (doctorId !== undefined && doctorId !== user.doctorId) {
+				const existingDoctor = await User.findOne({ doctorId });
+				if (existingDoctor) {
+					return res.status(400).json({ message: 'Doctor ID already exists. Please use a unique Doctor ID.' });
+				}
+				user.doctorId = doctorId;
+			}
 		}
-		if (user.role === 'doctor' && phoneNumber !== undefined) {
-			user.phoneNumber = phoneNumber;
-		}
+
+		// 🔹 Role-specific updates for patients
 		if (user.role === 'patient') {
 			if (age !== undefined) user.age = age;
 			if (gender) user.gender = gender;
