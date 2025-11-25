@@ -58,6 +58,7 @@
 .login-form input,
 .login-form select {
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
   padding: 10px;
   margin-top: 5px;
@@ -127,6 +128,14 @@
     font-size: 16px;
     /* Prevents zoom on iOS */
     padding: 10px;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .login-form select {
+    /* Ensure dropdown stays within viewport */
+    -webkit-appearance: menulist;
+    appearance: menulist;
   }
 
 }
