@@ -4,9 +4,11 @@
 .register-container {
   width: 400px;
   max-width: 90%;
-  margin: 20px auto; /* reduced top gap */
+  margin: 20px auto;
+  /* reduced top gap */
   padding: 30px;
-  background: linear-gradient(145deg, #ffffff, #eaf6fc); /* soft white → light cyan */
+  background: linear-gradient(145deg, #ffffff, #eaf6fc);
+  /* soft white → light cyan */
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(4, 86, 193, 0.15);
@@ -19,14 +21,22 @@
 
 /* Fade-in keyframes */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Heading */
 .register-container h2 {
   margin-bottom: 25px;
-  color: #0456c1; /* deep blue */
+  color: #0456c1;
+  /* deep blue */
 }
 
 /* Form */
@@ -42,7 +52,8 @@
   flex-direction: column;
   text-align: left;
   font-weight: 500;
-  color: #004d52; /* deep blue/teal */
+  color: #004d52;
+  /* deep blue/teal */
 }
 
 .register-form input,
@@ -51,7 +62,8 @@
   margin-top: 5px;
   font-size: 14px;
   border-radius: 8px;
-  border: 1px solid #26c6da; /* light cyan border */
+  border: 1px solid #26c6da;
+  /* light cyan border */
   outline: none;
   transition: border 0.3s ease, box-shadow 0.3s ease;
 }
@@ -108,7 +120,8 @@
 }
 
 .register-row label {
-  flex: 1; /* equal width */
+  flex: 1;
+  /* equal width */
 }
 
 .register-row input,
@@ -120,7 +133,7 @@
 @media screen and (max-width: 480px) {
   .register-container {
     padding: 20px;
-    
+
   }
 
   /* Removed stacking — fields always stay in one row */

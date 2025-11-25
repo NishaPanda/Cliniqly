@@ -55,7 +55,12 @@ export default function DoctorPatients() {
     try {
       const timeLabel = a.time || a.slotLabel;
       if (a?.date && timeLabel) {
-        return `${dayjs(a.date).format('YYYY-MM-DD')} at ${timeLabel}`;
+        let displayTime = timeLabel;
+        // If timeLabel is in HH:mm format, convert to 12-hour format with AM/PM
+        if (/^\d{1,2}:\d{2}$/.test(timeLabel)) {
+          displayTime = dayjs(timeLabel, 'HH:mm').format('hh:mm A');
+        }
+        return `${dayjs(a.date).format('YYYY-MM-DD')} at ${displayTime}`;
       }
       if (a?.date && !timeLabel) {
         return dayjs(a.date).format('YYYY-MM-DD');
@@ -141,7 +146,7 @@ export default function DoctorPatients() {
                     </div>
                   </div>
                   <div className="appointment-booked">
-                    🕒 Booked: {dayjs(appointment.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm')}
+                    🕒 Booked: {dayjs(appointment.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD hh:mm A')}
                   </div>
                 </div>
               ))}

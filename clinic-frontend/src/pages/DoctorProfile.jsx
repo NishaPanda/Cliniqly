@@ -79,123 +79,180 @@ export default function DoctorProfile() {
     <div>
       <style>{`
         .doctor-profile-container {
-           max-width: 700px;
+           max-width: 800px;
             margin: 40px auto;
-            padding: 30px 40px;
+            padding: 40px;
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(145deg, #ffffff, #eaf6fc);
-            border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             border: 1px solid rgba(4, 86, 193, 0.15);
             color: #004d52;
             animation: fadeIn 0.6s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .doctor-profile-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #0456c1, #26c6da);
         }
 
          h2 {
           text-align: center;
           color: #0456c1;
-          margin-bottom: 25px;
-          font-size: 1.9rem;
-          letter-spacing: 0.5px;
+          margin-bottom: 40px;
+          font-size: 2.2rem;
+          letter-spacing: -0.5px;
           text-shadow: 0 1px 2px rgba(4, 86, 193, 0.1);
+          font-weight: 700;
+          position: relative;
+          padding-bottom: 15px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: rgba(4, 86, 193, 0.2);
+            border-radius: 2px;
         }
 
           .profile-field {
-          margin-bottom: 15px;
+          margin-bottom: 24px;
           display: flex;
-          justify-content: space-between;
-          align-items: center;
-          font-size: 1rem;
+          flex-direction: column;
+          gap: 8px;
         }
+
+        @media (min-width: 768px) {
+            .profile-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 24px;
+            }
+            .profile-field {
+                margin-bottom: 0;
+            }
+            .profile-field.full-width {
+                grid-column: span 2;
+            }
+        }
+
            .profile-field input {
-          width: 90%;
-          padding: 8px 10px;
+          width: 100%;
+          padding: 12px 16px;
           font-size: 1rem;
-          border: 1px solid #b3e5fc;
-          border-radius: 6px;
+          border: 2px solid #b3e5fc;
+          border-radius: 8px;
           font-family: 'Poppins';
           color: #004d52;
-          background: #f0fcff;
+          background: #ffffff;
+          transition: all 0.3s ease;
+          box-sizing: border-box;
+        }
+
+        .profile-field input:focus {
+            outline: none;
+            border-color: #0456c1;
+            box-shadow: 0 0 0 4px rgba(4, 86, 193, 0.1);
         }
 
         .profile-field strong {
           color: #0456c1;
           font-weight: 600;
-          width: 120px;
+          font-size: 0.95rem;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .profile-value {
-          flex: 1;
-          text-align: left;
-          color: #071c61ff;
+          color: #071c61;
           font-weight: 500;
+          font-size: 1.1rem;
+          padding: 12px 16px;
+          background-color: rgba(255, 255, 255, 0.6);
+          border-radius: 8px;
+          border: 1px solid rgba(4, 86, 193, 0.1);
         }
           
 
         .edit-input {
-          width: 90%;
-          padding: 8px 10px;
+          width: 100%;
+          padding: 12px 16px;
           font-size: 1rem;
-          border: 1px solid #b3e5fc;
-          border-radius: 6px;
+          border: 2px solid #b3e5fc;
+          border-radius: 8px;
           font-family: 'Poppins';
           color: #004d52;
-          background: #f0fcff;
+          background: #ffffff;
+          box-sizing: border-box;
         }
 
         .profile-buttons {
           display: flex;
-          gap: 10px;
+          gap: 16px;
           justify-content: center;
-          margin-top: 15px;
-        }
-
-        .profile-buttons button {
-          flex: 1;
-          max-width: 150px;
-          min-width: 120px;
+          margin-top: 40px;
+          padding-top: 30px;
+          border-top: 1px solid rgba(4, 86, 193, 0.1);
         }
 
         .btn {
-          padding: 10px 16px;
+          padding: 14px 32px;
           border: none;
-          border-radius: 8px;
+          border-radius: 10px;
           font-weight: 600;
+          font-size: 1rem;
           cursor: pointer;
-          transition: all 0.2s ease-in-out;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          min-width: 140px;
         }
 
         .btn-edit {
-          background-color: #26c6da;
+          background: linear-gradient(135deg, #0456c1, #26c6da);
           color: white;
+          box-shadow: 0 4px 12px rgba(4, 86, 193, 0.2);
+        }
+
+        .btn-edit:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(4, 86, 193, 0.3);
+          filter: brightness(1.05);
         }
 
         .btn-save {
           background-color: #4caf50;
           color: white;
+          box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+        }
+
+        .btn-save:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+          background-color: #43a047;
         }
 
         .btn-cancel {
           background-color: #f44336;
           color: white;
+          box-shadow: 0 4px 12px rgba(244, 67, 54, 0.2);
         }
 
-        .btn:hover {
-          opacity: 0.9;
-          transform: translateY(-1px);
+        .btn-cancel:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(244, 67, 54, 0.3);
+          background-color: #d32f2f;
         }
-
-        h3 {
-          color: #26c6da;
-          margin-top: 25px;
-          margin-bottom: 15px;
-          font-size: 1.3rem;
-          border-bottom: 2px solid rgba(38, 198, 218, 0.3);
-          padding-bottom: 4px;
-          display: inline-block;
-        }
-
-
 
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
@@ -205,198 +262,151 @@ export default function DoctorProfile() {
         @media screen and (max-width: 768px) {
           .doctor-profile-container {
             padding: 24px;
-            margin: 40px 15px;
+            margin: 20px;
           }
           h2 {
-            font-size: 1.6rem;
-            margin-bottom: 20px;
-          }
-          .profile-field {
-            margin-bottom: 12px;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
           }
           .profile-buttons {
+            flex-direction: column;
             gap: 12px;
           }
-          .profile-buttons button {
-            padding: 9px 16px;
-            font-size: 14px;
-          }
-        }
-
-        @media screen and (max-width: 480px) {
-          .doctor-profile-container {
-            padding: 20px;
-            margin: 35px 10px;
-          }
-          h2 {
-            font-size: 1.5rem;
-          }
-          .profile-field {
-            flex-direction: column;
-            align-items: flex-start;
-          }
-          .profile-field strong {
-            margin-bottom: 5px;
-          }
-          .profile-buttons {
-            flex-direction: column;
-            gap: 8px;
-          }
-          .profile-buttons button {
-            max-width: none;
+          .btn {
             width: 100%;
-            min-width: auto;
-            padding: 10px 16px;
-            font-size: 13px;
           }
-
         }
       `}</style>
 
       <div className="doctor-profile-container">
         <h2>Doctor Profile</h2>
 
-        <div className="profile-field">
-          <strong>Name:</strong>
-          {isEditing ? (
-            <input
-              type="text"
-              name="name"
-              className="edit-input"
-              value={editData.name}
-              onChange={handleChange}
-            />
-          ) : (
-            <span className="profile-value">{user.name || '—'}</span>
-          )}
-        </div>
+        <div className="profile-grid">
+          <div className="profile-field">
+            <strong>Name</strong>
+            {isEditing ? (
+              <input
+                type="text"
+                name="name"
+                className="edit-input"
+                value={editData.name}
+                onChange={handleChange}
+                placeholder="Enter your name"
+              />
+            ) : (
+              <div className="profile-value">{user.name || '—'}</div>
+            )}
+          </div>
 
-        <div className="profile-field">
-          <strong>Email:</strong>
-          {isEditing ? (
-            <input
-              type="email"
-              name="email"
-              className="edit-input"
-              value={editData.email}
-              onChange={handleChange}
-            />
-          ) : (
-            <span className="profile-value">{user.email || '—'}</span>
-          )}
-        </div>
+          <div className="profile-field">
+            <strong>Email</strong>
+            {isEditing ? (
+              <input
+                type="email"
+                name="email"
+                className="edit-input"
+                value={editData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+              />
+            ) : (
+              <div className="profile-value">{user.email || '—'}</div>
+            )}
+          </div>
 
-        <div className="profile-field">
-          <strong>Role:</strong>
-          <span className="profile-value">{user.role || 'Doctor'}</span>
-        </div>
+          <div className="profile-field">
+            <strong>Role</strong>
+            <div className="profile-value">{user.role || 'Doctor'}</div>
+          </div>
 
-        <div className="profile-field">
-          <strong>Phone Number:</strong>
-          {isEditing ? (
-            <input
-              type="number"
-              name="phoneNumber"
-              className="edit-input"
-              value={editData.phoneNumber}
-              onChange={handleChange}
-              onKeyPress={(e) => {
-                if (!/[0-9]/.test(e.key)) {
-                  e.preventDefault();
-                }
-              }}
-              pattern="[0-9]*"
-              placeholder="Enter phone number"
-            />
-          ) : (
-            <span className="profile-value">{user.phoneNumber || '—'}</span>
-          )}
-        </div>
+          <div className="profile-field">
+            <strong>Phone Number</strong>
+            {isEditing ? (
+              <input
+                type="number"
+                name="phoneNumber"
+                className="edit-input"
+                value={editData.phoneNumber}
+                onChange={handleChange}
+                onKeyPress={(e) => {
+                  if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
+                pattern="[0-9]*"
+                placeholder="Enter phone number"
+              />
+            ) : (
+              <div className="profile-value">{user.phoneNumber || '—'}</div>
+            )}
+          </div>
 
-        <div className="profile-field">
-          <strong>Specialization:</strong>
-          {isEditing ? (
-            <input
-              type="text"
-              name="specialization"
-              className="edit-input"
-              value={editData.specialization}
-              onChange={handleChange}
-              placeholder="Enter specialization"
-            />
-          ) : (
-            <span className="profile-value">{user.specialization || '—'}</span>
-          )}
-        </div>
+          <div className="profile-field">
+            <strong>Specialization</strong>
+            {isEditing ? (
+              <input
+                type="text"
+                name="specialization"
+                className="edit-input"
+                value={editData.specialization}
+                onChange={handleChange}
+                placeholder="Enter specialization"
+              />
+            ) : (
+              <div className="profile-value">{user.specialization || '—'}</div>
+            )}
+          </div>
 
-        <div className="profile-field">
-          <strong>Clinic Name:</strong>
-          {isEditing ? (
-            <input
-              type="text"
-              name="clinicName"
-              className="edit-input"
-              value={editData.clinicName}
-              onChange={handleChange}
-              placeholder="Enter clinic name"
-            />
-          ) : (
-            <span className="profile-value">{user.clinicName || '—'}</span>
-          )}
-        </div>
+          <div className="profile-field">
+            <strong>Doctor ID</strong>
+            <div className="profile-value">{user.doctorId || '—'}</div>
+          </div>
 
-        <div className="profile-field">
-          <strong>Clinic Address:</strong>
-          {isEditing ? (
-            <input
-              type="text"
-              name="clinicAddress"
-              className="edit-input"
-              value={editData.clinicAddress}
-              onChange={handleChange}
-              placeholder="Enter clinic address"
-            />
-          ) : (
-            <span className="profile-value">{user.clinicAddress || '—'}</span>
-          )}
-        </div>
+          <div className="profile-field full-width">
+            <strong>Clinic Name</strong>
+            {isEditing ? (
+              <input
+                type="text"
+                name="clinicName"
+                className="edit-input"
+                value={editData.clinicName}
+                onChange={handleChange}
+                placeholder="Enter clinic name"
+              />
+            ) : (
+              <div className="profile-value">{user.clinicName || '—'}</div>
+            )}
+          </div>
 
-        <div className="profile-field">
-          <strong>Doctor ID:</strong>
-          {isEditing ? (
-            <input
-              type="number"
-              name="doctorId"
-              className="edit-input"
-              value={editData.doctorId}
-              onChange={handleChange}
-              onKeyPress={(e) => {
-                if (!/[0-9]/.test(e.key)) {
-                  e.preventDefault();
-                }
-              }}
-              pattern="[0-9]*"
-              placeholder="Enter doctor ID"
-            />
-          ) : (
-            <span className="profile-value">{user.doctorId || '—'}</span>
-          )}
+          <div className="profile-field full-width">
+            <strong>Clinic Address</strong>
+            {isEditing ? (
+              <input
+                type="text"
+                name="clinicAddress"
+                className="edit-input"
+                value={editData.clinicAddress}
+                onChange={handleChange}
+                placeholder="Enter clinic address"
+              />
+            ) : (
+              <div className="profile-value">{user.clinicAddress || '—'}</div>
+            )}
+          </div>
         </div>
 
         <div className="profile-buttons">
           {!isEditing ? (
-            <button className="btn btn-edit" onClick={handleEdit}>Edit</button>
+            <button className="btn btn-edit" onClick={handleEdit}>Edit Profile</button>
           ) : (
             <>
               <button className="btn btn-save" onClick={handleSave} disabled={loading}>
-                {loading ? 'Saving...' : 'Save'}
+                {loading ? 'Saving...' : 'Save Changes'}
               </button>
               <button className="btn btn-cancel" onClick={handleCancel}>Cancel</button>
             </>
           )}
         </div>
-
-
       </div>
     </div>
   );

@@ -376,6 +376,15 @@
   opacity: 0.3;
 }
 
+.testimonial-doctor {
+  color: #026caa;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-style: italic;
+  opacity: 0.9;
+}
+
 .testimonial-feedback {
   color: #333;
   font-size: 0.95rem;
@@ -522,6 +531,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
+  }
+
+  .testimonial-doctor {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
   }
 }
 

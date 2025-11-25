@@ -179,8 +179,13 @@ export default function MyAppointments() {
   // FORMAT helper: prefer explicit label fields, then format 'HH:mm' → 'hh:mm A' with leading zero
   function formatTimeLabel(a) {
     // 1) prefer server-provided human label (if you later add storing it)
-    if (a.timeLabel) return a.timeLabel;
-    if (a.slotLabel) return a.slotLabel;
+    let label = a.timeLabel || a.slotLabel;
+    if (label) {
+      if (/^\d{1,2}:\d{2}$/.test(label)) {
+        return dayjs(label, 'HH:mm').format('hh:mm A');
+      }
+      return label;
+    }
 
     // 2) if time stored as "HH:mm" (24-hour), convert to 'hh:mm A' with leading zero
     if (a.time && /^\d{1,2}:\d{2}$/.test(a.time)) {
@@ -279,7 +284,7 @@ export default function MyAppointments() {
           </div>
 
           <div className="appointment-booked">
-            Booked: {dayjs(a.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm')}
+            Booked: {dayjs(a.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD hh:mm A')}
           </div>
         </div>
 

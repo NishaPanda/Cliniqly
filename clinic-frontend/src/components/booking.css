@@ -6,9 +6,10 @@
   max-width: 600px;
   margin: 20px auto 15px;
   padding: 20px;
-  background: linear-gradient(145deg, #ffffff, #f2f9fc); /* subtle white → light cyan */
+  background: linear-gradient(145deg, #ffffff, #f2f9fc);
+  /* subtle white → light cyan */
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   font-family: 'Poppins', sans-serif;
   display: flex;
   flex-direction: column;
@@ -22,12 +23,37 @@
 
 /* Headings */
 .booking-card h3 {
-  color: #0456c1; /* dark blue */
+  color: #0456c1;
+  /* dark blue */
   margin: 0 0 15px 0;
   text-align: center;
   text-shadow: 0 1px 2px rgba(4, 86, 193, 0.12);
   font-size: 1.3rem;
   word-wrap: break-word;
+}
+
+/* Back Button */
+.booking-card .back-button {
+  align-self: flex-start;
+  background: rgba(4, 86, 193, 0.1);
+  color: #0456c1;
+  border: 1px solid rgba(4, 86, 193, 0.2);
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+  box-shadow: none;
+  min-height: auto;
+}
+
+.booking-card .back-button:hover {
+  background: rgba(4, 86, 193, 0.2);
+  border-color: #0456c1;
+  transform: translateX(-3px);
+  box-shadow: 0 2px 8px rgba(4, 86, 193, 0.15);
 }
 
 /* Form fields */
@@ -76,7 +102,7 @@
   margin-top: 5px;
 }
 
-.booking-card .flex-row.date-time > .field {
+.booking-card .flex-row.date-time>.field {
   flex: 1;
 }
 
@@ -110,7 +136,8 @@
 
 /* Reset button style */
 .booking-card button[type="button"] {
-  background: #b0c4dc; /* subtle light blue-gray */
+  background: #b0c4dc;
+  /* subtle light blue-gray */
   color: #004c80;
 }
 
@@ -128,8 +155,28 @@
 
 /* Fade-in animation */
 @keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Specific styling for Time Dropdown to reduce height */
+.booking-card select[name="time"] {
+  padding: 6px 10px;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.booking-card select[name="time"] option {
+  font-size: 13px;
+  padding: 4px;
+
 }
 
 /* Desktop */
@@ -159,6 +206,11 @@
 
   .booking-card button {
     padding: 12px 28px;
+    font-size: 15px;
+  }
+
+  .booking-card .back-button {
+    padding: 10px 20px;
     font-size: 15px;
   }
 }
@@ -254,6 +306,7 @@
     padding: 18px 15px;
     margin: 15px 8px 10px;
     gap: 14px;
+    box-sizing: border-box;
   }
 
   .booking-card h3 {
@@ -267,12 +320,20 @@
     font-weight: 500;
   }
 
+  .booking-card .field {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
   .booking-card input,
   .booking-card select,
   .booking-card textarea {
     font-size: 16px;
     padding: 12px;
     border-radius: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .booking-card textarea {
@@ -282,6 +343,14 @@
   .booking-card .flex-row.date-time {
     flex-direction: column;
     gap: 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .booking-card .flex-row.date-time>.field {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .booking-card .flex-row.buttons {
@@ -299,5 +368,13 @@
   .booking-card .small {
     font-size: 0.8rem;
     margin-top: 8px;
+    word-wrap: break-word;
   }
+
+  .booking-card .back-button {
+    max-width: 50px;
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+
 }

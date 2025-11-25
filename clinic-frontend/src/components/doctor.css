@@ -88,6 +88,8 @@
   letter-spacing: 0.3px;
   text-align: left;
   width: 100%;
+  margin-bottom: 0;
+  line-height: 1.2;
 }
 
 .doctor-card .doctor-info .doctor-specialty {
@@ -96,6 +98,8 @@
   opacity: 0.9;
   text-align: left;
   width: 100%;
+  margin-top: 0;
+  line-height: 1.2;
 }
 
 .doctor-card .doctor-info .doctor-phone {
@@ -244,6 +248,12 @@
   }
 
   .doctor-card button {
+    padding: 14px 32px;
+    font-size: 16px;
+    min-width: 160px;
+  }
+
+  .doctor-card .chat-btn {
     padding: 14px 32px;
     font-size: 16px;
     min-width: 160px;

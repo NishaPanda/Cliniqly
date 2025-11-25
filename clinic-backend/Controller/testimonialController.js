@@ -13,6 +13,7 @@ exports.getAllTestimonials = async (req, res) => {
 
     const testimonials = await Testimonial.find(query)
       .populate('patient', 'name email')
+      .populate('doctor', 'name')
       .sort({ rating: -1, createdAt: -1 }) // Sort by rating first, then date
       .lean();
     res.status(200).json(testimonials);

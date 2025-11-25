@@ -123,7 +123,7 @@ export default function BookingForm() {
         console.error("Error fetching doctors:", err);
         alert(
           "Failed to fetch doctors: " +
-            (err.response?.data?.message || err.message)
+          (err.response?.data?.message || err.message)
         );
         setLoading(false);
       }
@@ -221,6 +221,14 @@ export default function BookingForm() {
 
   return (
     <div className="booking-card">
+      <button
+        type="button"
+        className="back-button"
+        onClick={() => navigate(-1)}
+        aria-label="Go back"
+      >
+        ← 
+      </button>
       <h3>Book Appointment</h3>
       <form onSubmit={handleSubmit}>
         <div className="field">

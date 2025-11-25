@@ -2,9 +2,11 @@
 .login-container {
   width: 400px;
   max-width: 90%;
-  margin: 20px auto 60px; /* Top margin increased to create gap below navbar */
+  margin: 20px auto 60px;
+  /* Top margin increased to create gap below navbar */
   padding: 30px;
-  background: linear-gradient(145deg, #ffffff, #eaf6fc); /* soft white → light cyan */
+  background: linear-gradient(145deg, #ffffff, #eaf6fc);
+  /* soft white → light cyan */
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   font-family: 'Poppins', sans-serif;
@@ -17,14 +19,22 @@
 
 /* Fade-in animation keyframes */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Heading */
 .login-container h2 {
   margin-bottom: 25px;
-  color: #0456c1; /* deep blue for consistency */
+  color: #0456c1;
+  /* deep blue for consistency */
 }
 
 /* Form */
@@ -40,7 +50,8 @@
   flex-direction: column;
   text-align: left;
   font-weight: 500;
-  color: #004d52; /* deep blue/teal */
+  color: #004d52;
+  /* deep blue/teal */
 }
 
 .login-form input,
@@ -49,7 +60,8 @@
   margin-top: 5px;
   font-size: 14px;
   border-radius: 8px;
-  border: 1px solid #26c6da; /* light cyan border */
+  border: 1px solid #26c6da;
+  /* light cyan border */
   outline: none;
   transition: border 0.3s ease, box-shadow 0.3s ease;
 }
@@ -81,7 +93,8 @@
 
 /* Error message */
 .login-error {
-  color: #d32f2f; /* red */
+  color: #d32f2f;
+  /* red */
   font-weight: 500;
   margin-top: -5px;
 }

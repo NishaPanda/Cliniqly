@@ -264,6 +264,11 @@ export default function Testimonials() {
                     <div className="testimonial-rating">
                       {renderStars(testimonial.rating)}
                     </div>
+                    {testimonial.doctor && (
+                      <p className="testimonial-doctor">
+                        Feedback for Dr. {testimonial.doctor.name}
+                      </p>
+                    )}
                     <p className="testimonial-feedback">{testimonial.feedback}</p>
                     <div className="testimonial-author">
                       <p className="author-name">{testimonial.patientName}</p>
