@@ -1,5 +1,6 @@
 // src/components/DoctorList.jsx
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config';
@@ -38,7 +39,7 @@ export default function DoctorList() {
 
       setDoctors(doctorsData);
     } catch (err) {
-      alert('Error: ' + (err.response?.data?.message || err.message));
+      toast.error('Error: ' + (err.response?.data?.message || err.message));
     } finally {
       setLoading(false);
     }

@@ -150,6 +150,36 @@ export default function NavBar() {
     navigate("/profile");
   };
 
+  // ✅ Track seen appointments locally
+  const [seenAppointmentIds, setSeenAppointmentIds] = useState(() => {
+    const saved = localStorage.getItem('seen_appointments');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Calculate unseen count
+  const unseenAppointments = nextAppointments.filter(a => !seenAppointmentIds.includes(a._id));
+  const unseenCount = unseenAppointments.length;
+
+  const handlePatientsClick = (e) => {
+    e.stopPropagation();
+    if (!patientsOpen) {
+      // Opening the dropdown: mark current list as seen
+      const newSeenIds = [...seenAppointmentIds];
+      let changed = false;
+      nextAppointments.forEach(a => {
+        if (!newSeenIds.includes(a._id)) {
+          newSeenIds.push(a._id);
+          changed = true;
+        }
+      });
+      if (changed) {
+        setSeenAppointmentIds(newSeenIds);
+        localStorage.setItem('seen_appointments', JSON.stringify(newSeenIds));
+      }
+    }
+    setPatientsOpen(!patientsOpen);
+  };
+
   return (
     <nav className="navbar">
       {/* Left Side - Brand */}
@@ -199,10 +229,10 @@ export default function NavBar() {
             {user?.role === 'doctor' && (
               <div
                 className="patients-dropdown"
-                onClick={(e) => { e.stopPropagation(); setPatientsOpen(!patientsOpen); }}
+                onClick={handlePatientsClick}
               >
                 <div className="patients-icon" style={{ cursor: 'pointer' }}>👥</div>
-                <div className="patients-badge">{nextAppointments.length}</div>
+                {unseenCount > 0 && <div className="patients-badge">{unseenCount}</div>}
 
                 {patientsOpen && (
                   <div className="patients-menu" ref={patientsRef} style={{ color: "black" }}>

@@ -1,6 +1,8 @@
 // src/App.jsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
@@ -18,6 +20,7 @@ import PublicDoctorProfile from './pages/PublicDoctorProfile';
 export default function App() {
   return (
     <div className="app">
+      <ToastContainer position="top-right" autoClose={3000} />
       <NavBar />
       <main className="container">
         <Routes>

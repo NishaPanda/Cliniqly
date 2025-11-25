@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { API_BASE } from '../config';
 
@@ -66,10 +67,11 @@ export default function DoctorProfile() {
       localStorage.setItem('user', JSON.stringify(updatedUser));
       // notify other components (NavBar) to refresh their view
       try { window.dispatchEvent(new Event('user-profile-updated')); } catch (e) { /* noop */ }
+      toast.success('Profile updated successfully');
       setIsEditing(false);
     } catch (err) {
       console.error('Update failed', err);
-      alert('Error updating profile.');
+      toast.error('Error updating profile.');
     } finally {
       setLoading(false);
     }
@@ -261,19 +263,50 @@ export default function DoctorProfile() {
 
         @media screen and (max-width: 768px) {
           .doctor-profile-container {
-            padding: 24px;
-            margin: 20px;
+            padding: 24px 20px;
+            margin: 20px 16px;
+            border-radius: 16px;
+            width: auto;
           }
           h2 {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
+            font-size: 1.75rem;
+            margin-bottom: 25px;
+          }
+          h2::after {
+            width: 50px;
+            height: 3px;
+          }
+          .profile-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+          }
+          .profile-field {
+            margin-bottom: 0;
+          }
+          .profile-field strong {
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+          }
+          .profile-value, 
+          .profile-field input,
+          .edit-input {
+            font-size: 1rem; /* Prevents zoom on iOS */
+            padding: 12px 14px;
           }
           .profile-buttons {
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
+            margin-top: 30px;
+            padding-top: 24px;
           }
           .btn {
             width: 100%;
+            padding: 14px;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
         }
       `}</style>

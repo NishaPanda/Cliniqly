@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE } from '../config';
@@ -23,7 +24,9 @@ export default function Login() {
       );
 
       if (res.data.user.role !== role) {
-        setError(`You selected role "${role}" but account is "${res.data.user.role}"`);
+        const msg = `You selected role "${role}" but account is "${res.data.user.role}"`;
+        setError(msg);
+        toast.error(msg);
         return;
       }
 
@@ -33,11 +36,13 @@ export default function Login() {
       // ✅ Trigger storage event to update NavBar login state
       window.dispatchEvent(new Event("storage"));
 
-      alert(`Logged in successfully as ${res.data.user.role}`);
+      toast.success(`Logged in successfully as ${res.data.user.role}`);
       navigate("/");
 
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      const msg = err.response?.data?.message || "Login failed";
+      setError(msg);
+      toast.error(msg);
     }
   };
 

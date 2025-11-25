@@ -1,5 +1,6 @@
 // src/components/MyAppointments.jsx
 import React, { useEffect, useState, useMemo } from 'react';
+import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchAppointments, fetchDoctors, fetchDoctorAppointments } from '../api';
 import { cancelAppointment } from '../api';
@@ -36,11 +37,11 @@ export default function MyAppointments() {
 
   async function submitFeedback() {
     if (rating === 0) {
-      alert('Please select a rating');
+      toast.error('Please select a rating');
       return;
     }
     if (!feedbackText.trim()) {
-      alert('Please enter your feedback');
+      toast.error('Please enter your feedback');
       return;
     }
 
@@ -51,11 +52,11 @@ export default function MyAppointments() {
         rating,
         feedback: feedbackText
       });
-      alert('Thank you for your feedback!');
+      toast.success('Thank you for your feedback!');
       setFeedbackModalOpen(false);
     } catch (err) {
       console.error('Feedback error', err);
-      alert('Failed to submit feedback: ' + (err.message || 'Unknown error'));
+      toast.error('Failed to submit feedback: ' + (err.message || 'Unknown error'));
     }
   }
 
@@ -71,7 +72,7 @@ export default function MyAppointments() {
         .then(([a, d]) => { setAppts(a || []); setDoctors(d || []); })
         .catch(err => {
           console.error('Load error (doctor)', err);
-          alert(err?.message || 'Failed to load appointments');
+          toast.error(err?.message || 'Failed to load appointments');
         })
         .finally(() => setLoading(false));
     } else {
@@ -79,7 +80,7 @@ export default function MyAppointments() {
         .then(([a, d]) => { setAppts(a || []); setDoctors(d || []); })
         .catch(err => {
           console.error('Load error (patient)', err);
-          alert(err?.message || 'Failed to load appointments');
+          toast.error(err?.message || 'Failed to load appointments');
         })
         .finally(() => setLoading(false));
     }
@@ -170,7 +171,7 @@ export default function MyAppointments() {
       setAppts(newAppts);
     } catch (err) {
       console.error('Status update error', err);
-      alert('Status update failed: ' + (err.message || 'Unknown error'));
+      toast.error('Status update failed: ' + (err.message || 'Unknown error'));
     } finally {
       setProcessing(prev => ({ ...prev, [`${newStatus}_${a._id}`]: false }));
     }
@@ -317,7 +318,7 @@ export default function MyAppointments() {
                     setAppts(newAppts);
                   } catch (err) {
                     console.error('Accept error', err);
-                    alert('Accept failed: ' + (err.message || 'Unknown error'));
+                    toast.error('Accept failed: ' + (err.message || 'Unknown error'));
                   } finally {
                     setProcessing(prev => ({ ...prev, [`accept_${a._id}`]: false }));
                   }
@@ -336,7 +337,7 @@ export default function MyAppointments() {
                     setAppts(newAppts);
                   } catch (err) {
                     console.error('Reject error', err);
-                    alert('Reject failed: ' + (err.message || 'Unknown error'));
+                    toast.error('Reject failed: ' + (err.message || 'Unknown error'));
                   } finally {
                     setProcessing(prev => ({ ...prev, [`reject_${a._id}`]: false }));
                   }
@@ -347,13 +348,15 @@ export default function MyAppointments() {
 
           {user.role === 'doctor' && a.status === 'confirmed' && (
             <>
-              <button
-                style={{ marginLeft: 8 }}
-                disabled={processing[`completed_${a._id}`]}
-                onClick={() => handleStatusUpdate(a, 'completed')}
-              >
-                {processing[`completed_${a._id}`] ? 'Completing...' : 'Mark Completed'}
-              </button>
+              {isAppointmentPast(a) && (
+                <button
+                  style={{ marginLeft: 8 }}
+                  disabled={processing[`completed_${a._id}`]}
+                  onClick={() => handleStatusUpdate(a, 'completed')}
+                >
+                  {processing[`completed_${a._id}`] ? 'Completing...' : 'Mark Completed'}
+                </button>
+              )}
               {isAppointmentPast(a) && (
                 <button
                   style={{ marginLeft: 8 }}
@@ -379,7 +382,7 @@ export default function MyAppointments() {
                   setAppts(newAppts);
                 } catch (err) {
                   console.error('Cancel error', err);
-                  alert('Cancel failed: ' + (err.message || 'Unknown error'));
+                  toast.error('Cancel failed: ' + (err.message || 'Unknown error'));
                 } finally {
                   setProcessing(prev => ({ ...prev, [a._id]: false }));
                 }

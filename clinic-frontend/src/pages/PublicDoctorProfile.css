@@ -230,7 +230,9 @@
     color: #64748b;
     margin-bottom: 30px;
 }
-
+.testimonial-card-wrapper {
+    margin-bottom: 40px;
+}
 @keyframes slideUp {
     from {
         opacity: 0;
@@ -344,6 +346,7 @@
     box-sizing: border-box;
     padding: 0 15px;
     display: flex;
+    margin-bottom: 35px;
 }
 
 .testimonial-card {

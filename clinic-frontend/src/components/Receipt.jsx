@@ -1,6 +1,6 @@
 // src/components/Receipt.jsx
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { fetchAppointmentById, fetchDoctors } from '../api';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -16,6 +16,7 @@ dayjs.tz.setDefault('Asia/Kolkata');
 
 export default function Receipt() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [appt, setAppt] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -133,22 +134,76 @@ export default function Receipt() {
   const doctorSpecial = (doctor.specialization || doctor.specialty) || appt.doctor?.specialization || appt.doctor?.specialty || '—';
 
   return (
-    <div className="receipt-card printable">
-      <h3>Appointment Receipt</h3>
-      <div className="receipt-body">
-        <div><strong>Patient:</strong> {appt.patientName || patientObj.name || '—'}</div>
-        <div><strong>Email:</strong> {emailDisplay}</div>
-        <div><strong>Doctor:</strong> {doctor.name} ({doctorSpecial})</div>
-        <div><strong>Date & Time:</strong> {dateTimeDisplay}</div>
-        <div><strong>Reason:</strong> {reasonDisplay}</div>
-        <div><strong>Booking ID:</strong> {appt._id}</div>
-        <div className="small">
-          Printed: {dayjs().tz('Asia/Kolkata').format('YYYY-MM-DD h:mm A')}
+    <div className="receipt-container">
+      <div className="receipt-back-wrapper">
+        <button className="back-btn-arrow" onClick={() => navigate(-1)} title="Go Back">
+          &larr;
+        </button>
+      </div>
+
+      <div className="receipt-card printable">
+        <header className="receipt-header">
+          <div className="brand">
+            <h1>Cliniqly</h1>
+            <p>Excellence in Healthcare</p>
+          </div>
+          <div className="receipt-meta">
+            <p><strong>Receipt #:</strong> {appt._id.slice(-8).toUpperCase()}</p>
+            <p><strong>Date:</strong> {dayjs().tz('Asia/Kolkata').format('MMM DD, YYYY')}</p>
+          </div>
+        </header>
+
+        <div className="receipt-divider"></div>
+
+        <div className="receipt-details-grid">
+          <div className="detail-section">
+            <h4>Patient Details</h4>
+            <p><strong>Name:</strong> {appt.patientName || patientObj.name || '—'}</p>
+            <p><strong>Email:</strong> {emailDisplay}</p>
+            <p><strong>Booking ID:</strong> {appt._id}</p>
+          </div>
+          <div className="detail-section">
+            <h4>Doctor Details</h4>
+            <p><strong>Name:</strong> {doctor.name}</p>
+            <p><strong>Specialization:</strong> {doctorSpecial}</p>
+            <p><strong>Clinic:</strong> {doctor.clinicName || 'Cliniqly Main Center'}</p>
+            <p><strong>Address:</strong> {doctor.clinicAddress || '—'}</p>
+          </div>
+        </div>
+
+        <div className="receipt-service-section">
+          <table className="service-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Date & Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Medical Consultation
+                  <div className="sub-text">{reasonDisplay}</div>
+                </td>
+                <td>{dateTimeDisplay}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="receipt-footer">
+          <p>Thank you for choosing Cliniqly.</p>
+          <p className="contact-info">support@cliniqly.com</p>
+          <div className="print-timestamp">
+            Generated on {dayjs().tz('Asia/Kolkata').format('YYYY-MM-DD h:mm A')}
+          </div>
         </div>
       </div>
 
-      <div style={{ marginTop: 12 }}>
-        <button onClick={() => window.print()}>Print Receipt</button>
+      <div className="receipt-actions">
+        <button className="print-btn" onClick={() => window.print()}>
+          Print Receipt / Save as PDF
+        </button>
       </div>
     </div>
   );

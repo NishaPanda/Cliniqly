@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
 import { fetchTestimonials, createTestimonial } from '../api';
 import './testimonials.css';
 
@@ -11,8 +12,7 @@ export default function Testimonials() {
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({ rating: 5, feedback: '' });
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+
 
   // Carousel State
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -57,16 +57,14 @@ export default function Testimonials() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
 
     if (!formData.feedback.trim()) {
-      setError('Please enter your feedback');
+      toast.error('Please enter your feedback');
       return;
     }
 
     if (formData.feedback.trim().length < 10) {
-      setError('Feedback must be at least 10 characters');
+      toast.error('Feedback must be at least 10 characters');
       return;
     }
 
@@ -76,12 +74,12 @@ export default function Testimonials() {
         rating: formData.rating,
         feedback: formData.feedback.trim()
       });
-      setSuccess('Thank you! Your feedback has been submitted.');
+      toast.success('Thank you! Your feedback has been submitted.');
       setFormData({ rating: 5, feedback: '' });
       setShowForm(false);
       await loadTestimonials();
     } catch (err) {
-      setError(err.message || 'Failed to submit feedback');
+      toast.error(err.message || 'Failed to submit feedback');
     } finally {
       setSubmitting(false);
     }
@@ -170,9 +168,6 @@ export default function Testimonials() {
               <form onSubmit={handleSubmit} className="feedback-form">
                 <h3>Share Your Experience</h3>
 
-                {error && <div className="form-error">{error}</div>}
-                {success && <div className="form-success">{success}</div>}
-
                 <div className="form-group">
                   <label htmlFor="rating">Rating *</label>
                   <div className="rating-selector">
@@ -215,7 +210,6 @@ export default function Testimonials() {
                     className="btn-cancel"
                     onClick={() => {
                       setShowForm(false);
-                      setError('');
                       setFormData({ rating: 5, feedback: '' });
                     }}
                   >

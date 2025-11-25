@@ -1,5 +1,6 @@
 // src/components/BookingForm.jsx
 import React, { useEffect, useState, useMemo } from "react";
+import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -98,7 +99,7 @@ export default function BookingForm() {
     const user = JSON.parse(localStorage.getItem("user"));
 
     if (!token) {
-      alert("Please login first to book an appointment");
+      toast.error("Please login first to book an appointment");
       navigate("/login");
       return;
     }
@@ -121,7 +122,7 @@ export default function BookingForm() {
         setLoading(false);
       } catch (err) {
         console.error("Error fetching doctors:", err);
-        alert(
+        toast.error(
           "Failed to fetch doctors: " +
           (err.response?.data?.message || err.message)
         );
@@ -156,19 +157,19 @@ export default function BookingForm() {
     e.preventDefault();
 
     if (!form.patientName || !form.patientEmail || !form.doctorId || !form.date || !form.time) {
-      alert("Please fill all required fields.");
+      toast.error("Please fill all required fields.");
       return;
     }
 
     if (!validateDateTimeIst(form.date, form.time)) {
-      alert("Selected date/time is in the past (IST). Please choose a future slot.");
+      toast.error("Selected date/time is in the past (IST). Please choose a future slot.");
       return;
     }
 
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
     if (!token || !user) {
-      alert("Please login first.");
+      toast.error("Please login first.");
       navigate("/login");
       return;
     }
@@ -198,7 +199,7 @@ export default function BookingForm() {
         }
       );
 
-      alert("Appointment booked successfully!");
+      toast.success("Appointment booked successfully!");
       navigate(`/receipt/${res.data.appointment._id}`);
     } catch (err) {
       console.error("Booking error:", err);
@@ -206,7 +207,7 @@ export default function BookingForm() {
         err.response?.data?.message ||
         JSON.stringify(err.response?.data) ||
         err.message;
-      alert("Booking failed: " + msg);
+      toast.error("Booking failed: " + msg);
     }
   };
 
@@ -227,7 +228,7 @@ export default function BookingForm() {
         onClick={() => navigate(-1)}
         aria-label="Go back"
       >
-        ← 
+        ←
       </button>
       <h3>Book Appointment</h3>
       <form onSubmit={handleSubmit}>

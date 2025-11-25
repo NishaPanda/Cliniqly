@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE } from '../config';
@@ -42,7 +43,7 @@ export default function Register() {
         headers: { "Content-Type": "application/json" }
       });
 
-      alert(`Registered successfully as ${res.data.user.role}`);
+      toast.success(`Registered successfully as ${res.data.user.role}`);
       // Auto-login if token and user are returned
       if (res.data && res.data.token && res.data.user) {
         localStorage.setItem("token", res.data.token);
@@ -55,7 +56,9 @@ export default function Register() {
         navigate('/login');
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      const msg = err.response?.data?.message || "Registration failed";
+      setError(msg);
+      toast.error(msg);
     }
   };
 

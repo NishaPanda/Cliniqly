@@ -1,188 +1,234 @@
 /* ==============================
-   Receipt.css (Enhanced + Proper Top Gap)
+   Receipt.css (Professional & Print-Friendly)
    ============================== */
 
-/* Theme variables (colors preserved) */
-:root{
+:root {
   --bg-start: #f5f9fc;
-  --bg-end:   #eaf4fb;
-  --primary:  #0456c1;
-  --accent:   #26c6da;
-  --accent-alt:#1e99c3;
-  --card-bg-1:#ffffff;
-  --card-bg-2:#f2f9fc;
-  --text-dark:#004c80;
-  --muted-text:#345b7a;
-  --page-top-margin: 80px; /* ✅ Increased gap from top */
-  --max-width: 720px;
+  --bg-end: #eaf4fb;
+  --primary: #0456c1;
+  --accent: #26c6da;
+  --text-dark: #004c80;
+  --muted-text: #5f7d95;
+  --border-color: #e0e6ed;
+  --page-top-margin: 80px;
+  --max-width: 800px;
   --radius: 12px;
-  --shadow: 0 8px 20px rgba(0,0,0,0.08);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   --font-sans: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
-/* ==============================
-   Receipt Container
-   ============================== */
+/* Container */
+.receipt-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  padding-bottom: 40px;
+  width: 100%;
+}
+
+/* Card Styling */
 .receipt-card {
-  box-sizing: border-box;
-  margin: var(--page-top-margin) auto 30px; /* ✅ clear top space */
   width: 100%;
   max-width: var(--max-width);
-  padding: 30px;
-  background: linear-gradient(145deg, var(--card-bg-1), var(--card-bg-2)); /* preserved subtle gradient */
+  background: #fff;
+  padding: 40px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   font-family: var(--font-sans);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  animation: fadeInUp 0.6s ease forwards;
-  opacity: 0;
+  color: var(--text-dark);
   position: relative;
-  overflow: hidden;
-  color: var(--text-dark);
+  box-sizing: border-box;
 }
 
-/* Radial Accent (same as before) */
-.receipt-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(circle at top right, rgba(4,86,193,0.1), transparent 70%);
-  z-index: 0;
-  pointer-events: none;
+/* Header */
+.receipt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
 }
 
-.receipt-card * { position: relative; z-index: 1; }
-
-/* ==============================
-   Header
-   ============================== */
-.receipt-card h3 {
-  color: var(--primary);
-  text-align: center;
-  margin: 0 0 10px 0;
-  font-size: 1.3rem;
-  font-weight: 600;
-  text-shadow: 0 1px 2px rgba(4,86,193,0.12);
-}
-
-/* Info Rows */
-.receipt-card .info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 20px;
-}
-
-.receipt-card .info dt {
-  font-weight: 600;
-  color: var(--text-dark);
-}
-
-.receipt-card .info dd {
+.receipt-header .brand h1 {
   margin: 0;
+  color: var(--primary);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.receipt-header .brand p {
+  margin: 4px 0 0;
   color: var(--muted-text);
+  font-size: 0.9rem;
+}
+
+.receipt-header .receipt-meta {
+  text-align: right;
+}
+
+.receipt-header .receipt-meta p {
+  margin: 4px 0;
   font-size: 0.95rem;
+  color: var(--text-dark);
 }
 
 /* Divider */
-.receipt-card .divider {
-  height: 1px;
-  background: linear-gradient(90deg, rgba(4,86,193,0.06), rgba(4,86,193,0.02));
-  border-radius: 1px;
-  margin: 10px 0;
+.receipt-divider {
+  height: 2px;
+  background: var(--border-color);
+  margin: 20px 0 30px;
 }
 
-/* Summary Section */
-.receipt-card .summary {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 6px;
+/* Details Grid */
+.receipt-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 30px;
 }
 
-.receipt-card .summary .label {
+.detail-section h4 {
+  margin: 0 0 12px;
+  color: var(--primary);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.detail-section p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Service Table */
+.receipt-service-section {
+  margin-bottom: 30px;
+}
+
+.service-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.service-table th,
+.service-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.service-table th {
+  background-color: #f8fbff;
+  color: var(--primary);
   font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.service-table td {
+  font-size: 0.95rem;
   color: var(--text-dark);
 }
 
-.receipt-card .summary .value {
-  font-weight: 700;
+.service-table .sub-text {
+  font-size: 0.85rem;
+  color: var(--muted-text);
+  margin-top: 4px;
+}
+
+.service-table .text-right {
+  text-align: right;
+}
+
+/* Footer */
+.receipt-footer {
+  text-align: center;
+  margin-top: 0;
+  padding-top: 20px;
+  border-top: 1px dashed var(--border-color);
+}
+
+.receipt-footer p {
+  margin: 6px 0;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+
+.receipt-footer .contact-info {
+  color: var(--muted-text);
+  font-size: 0.9rem;
+}
+
+.receipt-footer .print-timestamp {
+  margin-top: 15px;
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+/* Actions */
+.receipt-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.print-btn {
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(4, 86, 193, 0.3);
+  transition: all 0.2s ease;
+}
+
+.print-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(4, 86, 193, 0.4);
+}
+
+/* Back Button */
+.receipt-back-wrapper {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-bottom: 0px;
+}
+
+.back-btn-arrow {
+  background: none;
+  border: none;
+  color: var(--muted-text);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  transition: color 0.2s ease;
+}
+
+.back-btn-arrow:hover {
   color: var(--primary);
 }
 
-/* Small Footer Text */
-.receipt-card .small {
-  font-size: 0.85rem;
-  color: var(--text-dark);
-  text-align: center;
-  margin-top: 8px;
-}
-
-/* ==============================
-   Buttons
-   ============================== */
-.receipt-card button {
-  padding: 10px 22px;
-  font-size: 14px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #fff;
-  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 12px rgba(4, 86, 193, 0.3);
-  align-self: flex-start;
-}
-
-.receipt-card button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(4, 86, 193, 0.35);
-}
-
-.receipt-card button:focus {
-  outline: 3px solid rgba(38,198,218,0.22);
-  outline-offset: 3px;
-}
-
-/* ==============================
-   Animation
-   ============================== */
-@keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .receipt-card {
-    animation: none;
-    transition: none;
-  }
-}
-
-/* ==============================
-   Responsive
-   ============================== */
-@media screen and (max-width: 480px) {
-  :root { --page-top-margin: 60px; } /* slightly smaller gap on mobile */
-
-  .receipt-card {
-    padding: 20px 15px;
-    margin: var(--page-top-margin) 12px 20px;
-  }
-
-  .receipt-card .info {
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .receipt-details-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
-  .receipt-card button {
-    width: 100%;
-    align-self: flex-start;
-    text-align: center;
+  .receipt-card {
+    padding: 20px;
   }
 }
 
@@ -190,32 +236,65 @@
    Print Styles
    ============================== */
 @media print {
-  body * { visibility: hidden !important; }
-  .printable, .printable * { visibility: visible !important; }
-  .printable {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
-    width: 100% !important;
-    background: #fff !important;
-    color: #000 !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    padding: 12mm !important;
-    margin: 0 !important;
+  @page {
+    margin: 0;
+    size: auto;
   }
-  .receipt-card button { display: none !important; }
-}
 
-/* Utility for accessibility */
-.sr-only {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0,0,0,0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
+  body {
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide everything else */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only receipt */
+  .printable,
+  .printable * {
+    visibility: visible;
+  }
+
+  .receipt-container {
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
+
+  .receipt-card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 40px;
+    /* Add padding for print margins */
+    box-shadow: none;
+    border-radius: 0;
+    border: none;
+  }
+
+  /* Hide buttons */
+  .receipt-actions,
+  .print-btn,
+  .receipt-back-wrapper {
+    display: none !important;
+  }
+
+  /* Ensure colors print correctly if user enables background graphics,
+     but default to high contrast */
+  .receipt-header .brand h1 {
+    color: #000;
+  }
+
+  .service-table th {
+    background-color: #f0f0f0 !important;
+    color: #000;
+  }
 }

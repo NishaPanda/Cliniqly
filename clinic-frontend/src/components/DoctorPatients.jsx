@@ -1,5 +1,6 @@
 // src/components/DoctorPatients.jsx
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { fetchDoctorAppointments, fetchDoctors } from '../api';
 import dayjs from 'dayjs';
@@ -24,7 +25,7 @@ export default function DoctorPatients() {
       .then(([a]) => { setAppts(a || []); })
       .catch(err => {
         console.error('Load error', err);
-        alert(err?.message || 'Failed to load patients');
+        toast.error(err?.message || 'Failed to load patients');
       })
       .finally(() => setLoading(false));
   }, []);
