@@ -1,9 +1,9 @@
 // src/components/MyAppointments.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchAppointments, fetchDoctors, fetchDoctorAppointments } from '../api';
 import { cancelAppointment } from '../api';
-import { acceptAppointment, rejectAppointment, updateAppointmentStatus } from '../api';
+import { acceptAppointment, rejectAppointment, updateAppointmentStatus, createTestimonial } from '../api';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
@@ -22,6 +22,42 @@ export default function MyAppointments() {
   const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem('user')) || {};
   const navigate = useNavigate();
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+  function openFeedbackModal(appt) {
+    setSelectedAppointment(appt);
+    setRating(0);
+    setFeedbackText('');
+    setFeedbackModalOpen(true);
+  }
+
+  async function submitFeedback() {
+    if (rating === 0) {
+      alert('Please select a rating');
+      return;
+    }
+    if (!feedbackText.trim()) {
+      alert('Please enter your feedback');
+      return;
+    }
+
+    try {
+      await createTestimonial({
+        doctorId: selectedAppointment.doctorId,
+        appointmentId: selectedAppointment._id,
+        rating,
+        feedback: feedbackText
+      });
+      alert('Thank you for your feedback!');
+      setFeedbackModalOpen(false);
+    } catch (err) {
+      console.error('Feedback error', err);
+      alert('Failed to submit feedback: ' + (err.message || 'Unknown error'));
+    }
+  }
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -205,6 +241,165 @@ export default function MyAppointments() {
   }
 
 
+  const groupedAppointments = useMemo(() => {
+    if (user.role === 'doctor') return [];
+    const groups = {};
+    appts.forEach(a => {
+      const dId = a.doctorId;
+      if (!groups[dId]) {
+        groups[dId] = {
+          doctorId: dId,
+          doctorName: doctorName(dId),
+          appointments: []
+        };
+      }
+      groups[dId].appointments.push(a);
+    });
+    return Object.values(groups);
+  }, [appts, doctors, user.role]);
+
+  const renderCard = (a, index, isGroupedView = false) => (
+    <div
+      key={a._id}
+      className="appointment-card"
+      style={{ animationDelay: `${index * 0.1}s` }}
+    >
+      <div className="appointment-info">
+        <div>
+          {user.role === 'doctor' ? (
+            <div className="patient-doctor">{patientInfo(a)} — Booked with {doctorName(a.doctorId)}</div>
+          ) : (
+            <div className="patient-doctor">
+              {isGroupedView ? a.patientName : `${a.patientName} — ${doctorName(a.doctorId)}`}
+            </div>
+          )}
+
+          <div className="appointment-date">
+            {formatAppointmentDateTime(a)}
+          </div>
+
+          <div className="appointment-booked">
+            Booked: {dayjs(a.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm')}
+          </div>
+        </div>
+
+        <div className="appointment-actions-wrapper">
+          {user.role !== 'doctor' && a.status !== 'rejected' && a.status !== 'cancelled' && a.status !== 'no-show' && (
+            <>
+              <Link to={`/receipt/${a._id}`}><button style={{ marginLeft: 8 }}>Receipt</button></Link>
+              {a.status === 'completed' && !isGroupedView && (
+                <button
+                  className={`btn-feedback ${a.hasFeedback ? 'hidden-feedback' : ''}`}
+                  style={{ marginLeft: 8 }}
+                  onClick={() => openFeedbackModal(a)}
+                >
+                  ★ Give Feedback
+                </button>
+              )}
+            </>
+          )}
+          {/* doctor status management buttons */}
+          {user.role === 'doctor' && a.status === 'pending' && (
+            <>
+              <button
+                style={{ marginLeft: 8 }}
+                disabled={processing[`accept_${a._id}`]}
+                onClick={async () => {
+                  setProcessing(prev => ({ ...prev, [`accept_${a._id}`]: true }));
+                  try {
+                    await acceptAppointment(a._id);
+                    const newAppts = await fetchDoctorAppointments();
+                    setAppts(newAppts);
+                  } catch (err) {
+                    console.error('Accept error', err);
+                    alert('Accept failed: ' + (err.message || 'Unknown error'));
+                  } finally {
+                    setProcessing(prev => ({ ...prev, [`accept_${a._id}`]: false }));
+                  }
+                }}
+              >Accept</button>
+
+              <button
+                style={{ marginLeft: 8 }}
+                disabled={processing[`reject_${a._id}`]}
+                onClick={async () => {
+                  if (!confirm('Reject this appointment?')) return;
+                  setProcessing(prev => ({ ...prev, [`reject_${a._id}`]: true }));
+                  try {
+                    await rejectAppointment(a._id);
+                    const newAppts = await fetchDoctorAppointments();
+                    setAppts(newAppts);
+                  } catch (err) {
+                    console.error('Reject error', err);
+                    alert('Reject failed: ' + (err.message || 'Unknown error'));
+                  } finally {
+                    setProcessing(prev => ({ ...prev, [`reject_${a._id}`]: false }));
+                  }
+                }}
+              >Reject</button>
+            </>
+          )}
+
+          {user.role === 'doctor' && a.status === 'confirmed' && (
+            <>
+              <button
+                style={{ marginLeft: 8 }}
+                disabled={processing[`completed_${a._id}`]}
+                onClick={() => handleStatusUpdate(a, 'completed')}
+              >
+                {processing[`completed_${a._id}`] ? 'Completing...' : 'Mark Completed'}
+              </button>
+              {isAppointmentPast(a) && (
+                <button
+                  style={{ marginLeft: 8 }}
+                  disabled={processing[`no-show_${a._id}`]}
+                  onClick={() => handleStatusUpdate(a, 'no-show')}
+                >
+                  {processing[`no-show_${a._id}`] ? 'Updating...' : 'Mark No-show'}
+                </button>
+              )}
+            </>
+          )}
+
+          {user.role !== 'doctor' && a.status === 'pending' && (
+            <button
+              style={{ marginLeft: 8 }}
+              disabled={processing[a._id]}
+              onClick={async () => {
+                if (!confirm('Cancel this appointment?')) return;
+                setProcessing(prev => ({ ...prev, [a._id]: true }));
+                try {
+                  await cancelAppointment(a._id);
+                  const newAppts = await fetchAppointments();
+                  setAppts(newAppts);
+                } catch (err) {
+                  console.error('Cancel error', err);
+                  alert('Cancel failed: ' + (err.message || 'Unknown error'));
+                } finally {
+                  setProcessing(prev => ({ ...prev, [a._id]: false }));
+                }
+              }}
+            >
+              {processing[a._id] ? 'Cancelling...' : 'Cancel'}
+            </button>
+          )}
+
+          {a.status !== 'cancelled' && a.status !== 'pending' && (
+            <span
+              style={{
+                marginLeft: 8,
+                color: a.status === 'rejected' ? '#c0392b' : a.status === 'no-show' ? '#ffa500' : a.status === 'completed' ? '#0000FF' : '#2e8b57',
+                fontWeight: 600
+              }}
+            >
+              {getStatusLabel(a.status)}
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
 
   if (loading) return <div className="appointments-container no-appointments">Loading appointments...</div>;
 
@@ -219,134 +414,70 @@ export default function MyAppointments() {
   return (
     <div className="appointments-container">
       <h2>My Appointments</h2>
-      {appts.map((a, index) => (
-        <div
-          key={a._id}
-          className="appointment-card"
-          style={{ animationDelay: `${index * 0.1}s` }}
-        >
-          <div className="appointment-info">
-            <div>
-              {user.role === 'doctor' ? (
-                <div className="patient-doctor">{patientInfo(a)} — Booked with {doctorName(a.doctorId)}</div>
-              ) : (
-                <div className="patient-doctor">{a.patientName} — {doctorName(a.doctorId)}</div>
-              )}
+      {user.role === 'doctor' ? (
+        appts.map((a, index) => renderCard(a, index, false))
+      ) : (
+        groupedAppointments.map((group) => {
+          // Check if patient has already given feedback for this doctor
+          const hasGivenFeedback = group.appointments.some(a => a.hasFeedback);
 
-              <div className="appointment-date">
-                {formatAppointmentDateTime(a)}
+          // Find the latest completed appointment to attach feedback to (only if not given yet)
+          let feedbackAppt = null;
+          if (!hasGivenFeedback) {
+            feedbackAppt = group.appointments
+              .filter(a => a.status === 'completed')
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+          }
+
+          return (
+            <div key={group.doctorId} className="doctor-appointment-group">
+              <div className="doctor-group-header">
+                <h3 className="doctor-group-name">{group.doctorName}</h3>
+                {feedbackAppt && (
+                  <button
+                    className="btn-feedback"
+                    onClick={() => openFeedbackModal(feedbackAppt)}
+                  >
+                    ★ Give Feedback
+                  </button>
+                )}
               </div>
-
-              <div className="appointment-booked">
-                Booked: {dayjs(a.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm')}
+              <div className="doctor-group-list">
+                {group.appointments.map((a, index) => renderCard(a, index, true))}
               </div>
             </div>
-
-            <div>
-              {user.role !== 'doctor' && a.status !== 'rejected' && a.status !== 'cancelled' && a.status !== 'no-show' && (
-                <Link to={`/receipt/${a._id}`}><button style={{ marginLeft: 8 }}>Receipt</button></Link>
-              )}
-              {/* doctor status management buttons */}
-              {user.role === 'doctor' && a.status === 'pending' && (
-                <>
-                  <button
-                    style={{ marginLeft: 8 }}
-                    disabled={processing[`accept_${a._id}`]}
-                    onClick={async () => {
-                      setProcessing(prev => ({ ...prev, [`accept_${a._id}`]: true }));
-                      try {
-                        await acceptAppointment(a._id);
-                        const newAppts = await fetchDoctorAppointments();
-                        setAppts(newAppts);
-                      } catch (err) {
-                        console.error('Accept error', err);
-                        alert('Accept failed: ' + (err.message || 'Unknown error'));
-                      } finally {
-                        setProcessing(prev => ({ ...prev, [`accept_${a._id}`]: false }));
-                      }
-                    }}
-                  >Accept</button>
-
-                  <button
-                    style={{ marginLeft: 8 }}
-                    disabled={processing[`reject_${a._id}`]}
-                    onClick={async () => {
-                      if (!confirm('Reject this appointment?')) return;
-                      setProcessing(prev => ({ ...prev, [`reject_${a._id}`]: true }));
-                      try {
-                        await rejectAppointment(a._id);
-                        const newAppts = await fetchDoctorAppointments();
-                        setAppts(newAppts);
-                      } catch (err) {
-                        console.error('Reject error', err);
-                        alert('Reject failed: ' + (err.message || 'Unknown error'));
-                      } finally {
-                        setProcessing(prev => ({ ...prev, [`reject_${a._id}`]: false }));
-                      }
-                    }}
-                  >Reject</button>
-                </>
-              )}
-
-              {user.role === 'doctor' && a.status === 'confirmed' && (
-                <>
-                  <button
-                    style={{ marginLeft: 8 }}
-                    disabled={processing[`completed_${a._id}`]}
-                    onClick={() => handleStatusUpdate(a, 'completed')}
-                  >
-                    {processing[`completed_${a._id}`] ? 'Completing...' : 'Mark Completed'}
-                  </button>
-                  {isAppointmentPast(a) && (
-                    <button
-                      style={{ marginLeft: 8 }}
-                      disabled={processing[`no-show_${a._id}`]}
-                      onClick={() => handleStatusUpdate(a, 'no-show')}
-                    >
-                      {processing[`no-show_${a._id}`] ? 'Updating...' : 'Mark No-show'}
-                    </button>
-                  )}
-                </>
-              )}
-
-              {user.role !== 'doctor' && a.status === 'pending' && (
-                <button
-                  style={{ marginLeft: 8 }}
-                  disabled={processing[a._id]}
-                  onClick={async () => {
-                    if (!confirm('Cancel this appointment?')) return;
-                    setProcessing(prev => ({ ...prev, [a._id]: true }));
-                    try {
-                      await cancelAppointment(a._id);
-                      const newAppts = await fetchAppointments();
-                      setAppts(newAppts);
-                    } catch (err) {
-                      console.error('Cancel error', err);
-                      alert('Cancel failed: ' + (err.message || 'Unknown error'));
-                    } finally {
-                      setProcessing(prev => ({ ...prev, [a._id]: false }));
-                    }
-                  }}
-                >
-                  {processing[a._id] ? 'Cancelling...' : 'Cancel'}
-                </button>
-              )}
-
-              {a.status !== 'cancelled' && a.status !== 'pending' && a.status !== 'confirmed' && (
+          );
+        })
+      )}
+      {feedbackModalOpen && (
+        <div className="feedback-modal-overlay" onClick={() => setFeedbackModalOpen(false)}>
+          <div className="feedback-modal" onClick={e => e.stopPropagation()}>
+            <button className="feedback-modal-close" onClick={() => setFeedbackModalOpen(false)}>×</button>
+            <h3>Rate your experience</h3>
+            <p className="subtitle">How was your appointment with {selectedAppointment ? doctorName(selectedAppointment.doctorId) : 'the doctor'}?</p>
+            <div className="star-rating">
+              {[1, 2, 3, 4, 5].map(star => (
                 <span
-                  style={{
-                    marginLeft: 8,
-                    color: a.status === 'rejected' ? '#c0392b' : a.status === 'no-show' ? '#ffa500' : a.status === 'completed' ? '#0000FF' : '#2e8b57',
-                    fontWeight: 600
-                  }}
+                  key={star}
+                  className={star <= rating ? 'active' : ''}
+                  onClick={() => setRating(star)}
                 >
-                  {getStatusLabel(a.status)}
+                  ★
                 </span>
-              )}
+              ))}
+            </div>
+            <textarea
+              placeholder="Share your experience with this doctor..."
+              value={feedbackText}
+              onChange={e => setFeedbackText(e.target.value)}
+            />
+            <div className="feedback-modal-actions">
+              <button className="cancel-btn" onClick={() => setFeedbackModalOpen(false)}>Cancel</button>
+              <button className="submit-btn" onClick={submitFeedback}>Submit Feedback</button>
             </div>
           </div>
         </div>
-      ))}
+      )}
     </div>
   );
 }

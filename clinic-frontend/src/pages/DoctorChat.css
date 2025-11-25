@@ -12,12 +12,12 @@
 
 .chat-page-header h2 {
   font-size: 28px;
-  color: #333;
+  color: #0456c1;
   margin-bottom: 8px;
 }
 
 .chat-page-header p {
-  color: #666;
+  color: #1e99c3;
   font-size: 16px;
 }
 
@@ -65,7 +65,7 @@
 .participant-avatar {
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #00bfa5, #0092bf);
+  background: linear-gradient(135deg, #0456c1, #0092bf);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -84,7 +84,7 @@
 .participant-name {
   font-weight: 600;
   font-size: 16px;
-  color: #333;
+  color: #0456c1;
   margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
@@ -117,8 +117,8 @@
 }
 
 .chat-action-btn {
-  background: #f0f2f5;
-  color: #333;
+  background: #1e99c3;
+  color: #fff;
   border: none;
   padding: 8px 16px;
   border-radius: 20px;

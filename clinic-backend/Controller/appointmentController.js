@@ -66,6 +66,17 @@ exports.getMyAppointments = async (req, res) => {
     const appointments = await Appointment.find({ patient: patientId })
       .sort({ date: 1 }) // upcoming first
       .lean(); // plain JS objects
+
+    // Fetch testimonials for this patient to check which appointments have feedback
+    const Testimonial = require("../Models/Testimonial");
+    const testimonials = await Testimonial.find({ patient: patientId }).select('appointmentId');
+    const feedbackMap = new Set(testimonials.map(t => String(t.appointmentId)));
+
+    // Add hasFeedback flag
+    appointments.forEach(appt => {
+      appt.hasFeedback = feedbackMap.has(String(appt._id));
+    });
+
     res.status(200).json(appointments);
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
@@ -172,8 +183,8 @@ exports.acceptAppointment = async (req, res) => {
     }
 
     appointment.status = 'confirmed';
-  appointment.confirmedAt = new Date();
-  await appointment.save();
+    appointment.confirmedAt = new Date();
+    await appointment.save();
 
     // Optionally, generate receipt or any additional processing here
 
@@ -200,8 +211,8 @@ exports.rejectAppointment = async (req, res) => {
     }
 
     appointment.status = 'rejected';
-  appointment.rejectedAt = new Date();
-  await appointment.save();
+    appointment.rejectedAt = new Date();
+    await appointment.save();
 
     res.status(200).json({ message: 'Appointment rejected', appointment });
   } catch (err) {

@@ -33,13 +33,27 @@
    Animations
    ============================== */
 @keyframes fadeInContainer {
-  from { opacity: 0; transform: translateY(15px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(25px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ==============================
@@ -50,7 +64,7 @@
   border-radius: 14px;
   border: 1px solid rgba(200, 220, 230, 0.6);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06),
-              0 2px 6px rgba(0, 0, 0, 0.03);
+    0 2px 6px rgba(0, 0, 0, 0.03);
   padding: 25px 30px;
   width: 100%;
   max-width: 850px;
@@ -73,7 +87,7 @@
   right: 0;
   width: 120px;
   height: 120px;
-  background: radial-gradient(circle at top right, rgba(4,86,193,0.08), transparent 70%);
+  background: radial-gradient(circle at top right, rgba(4, 86, 193, 0.08), transparent 70%);
   z-index: 0;
 }
 
@@ -81,7 +95,7 @@
 .appointment-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08),
-              0 4px 10px rgba(0, 0, 0, 0.05);
+    0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 /* ==============================
@@ -119,14 +133,15 @@
 /* Right block */
 .appointment-card .appointment-info .right {
   display: flex;
-  flex-direction: column;  /* updated earlier */
+  flex-direction: column;
+  /* updated earlier */
   align-items: flex-end;
   gap: 10px;
 }
 
 /* Time pill */
 .appointment-time {
-  background: linear-gradient(90deg, rgba(4,86,193,0.08), rgba(38,198,218,0.06));
+  background: linear-gradient(90deg, rgba(4, 86, 193, 0.08), rgba(38, 198, 218, 0.06));
   border-radius: 8px;
   padding: 8px 12px;
   font-weight: 600;
@@ -144,9 +159,17 @@
   text-transform: capitalize;
 }
 
-.status-pill.confirmed { background: linear-gradient(90deg, #0456c1, #26c6da); }
-.status-pill.pending   { background: linear-gradient(90deg, #ffb74d, #ff8a65); }
-.status-pill.cancelled { background: linear-gradient(90deg, #9e9e9e, #616161); }
+.status-pill.confirmed {
+  background: linear-gradient(90deg, #0456c1, #26c6da);
+}
+
+.status-pill.pending {
+  background: linear-gradient(90deg, #ffb74d, #ff8a65);
+}
+
+.status-pill.cancelled {
+  background: linear-gradient(90deg, #9e9e9e, #616161);
+}
 
 /* ==============================
    BUTTON FIX (ONLY MODIFIED PART)
@@ -163,7 +186,7 @@
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.20s ease, box-shadow 0.20s ease, opacity 0.12s ease;
-  box-shadow: 0 6px 14px rgba(4,86,193,0.18);
+  box-shadow: 0 6px 14px rgba(4, 86, 193, 0.18);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -219,7 +242,7 @@
 .appointment-card button:hover {
   transform: translateY(-2px);
   opacity: 0.98;
-  box-shadow: 0 8px 18px rgba(4,86,193,0.26);
+  box-shadow: 0 8px 18px rgba(4, 86, 193, 0.26);
 }
 
 /* Mobile: full width buttons */
@@ -229,6 +252,7 @@
     align-items: stretch;
     gap: 10px;
   }
+
   .appointment-card button {
     width: 100%;
     min-width: unset;
@@ -261,14 +285,17 @@
     padding: 0 40px 80px;
     gap: 45px;
   }
+
   .appointments-container h2 {
     margin-top: 20px;
     font-size: 2.2rem;
   }
+
   .appointment-card {
     padding: 35px 40px;
     max-width: 950px;
   }
+
   .appointment-card button {
     padding: 14px 32px;
     font-size: 16px;
@@ -282,11 +309,13 @@
     padding: 0 25px 60px;
     gap: 35px;
   }
+
   .appointment-card .appointment-info {
     flex-direction: column;
     align-items: flex-start;
     gap: 15px;
   }
+
   .appointment-card button {
     width: 100%;
     padding: 12px 28px;
@@ -301,11 +330,13 @@
     padding: 0 20px 50px;
     gap: 30px;
   }
+
   .appointment-card .appointment-info {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
+
   .appointment-card button {
     width: 100%;
     padding: 11px 24px;
@@ -319,31 +350,63 @@
     padding: 0 15px 45px;
     gap: 28px;
   }
+
+  .appointment-actions-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 70%;
+    gap: 8px;
+  }
+
+  .appointment-actions-wrapper button {
+    width: auto !important;
+    /* Override full width */
+    min-width: unset;
+    padding: 10px 16px;
+    margin-left: 0 !important;
+    /* Reset inline margin */
+  }
+
+  .appointment-actions-wrapper span {
+    margin-left: 0 !important;
+    /* Reset inline margin */
+    text-align: right;
+  }
+
   .appointment-card {
     padding: 22px 20px;
   }
+
   .appointment-card .appointment-info {
     gap: 12px;
   }
-  .appointment-card button {
+
+  /* Keep other buttons full width if not in wrapper */
+  .appointment-card>button {
     width: 100%;
-    display:flex;
+    display: flex;
     padding: 10px 20px;
   }
+
   .appointment-card .chat-btn {
     width: auto;
     padding: 10px 20px;
   }
+
   .appointment-card a {
     text-decoration: none;
   }
+
   .appointment-actions {
-  display: inline-flex;
-  gap: 16px;   /* increased spacing between buttons */
-  align-items: center;
-  justify-content: flex-end;
- }
- .appointments-container h2 {
+    display: inline-flex;
+    gap: 16px;
+    /* increased spacing between buttons */
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .appointments-container h2 {
     margin-top: 40px;
     font-size: 1.7rem;
   }
@@ -354,11 +417,614 @@
    Small utilities
    ============================== */
 .text-muted {
-  color: rgba(0,0,0,0.55);
+  color: rgba(0, 0, 0, 0.55);
   font-size: 0.9rem;
 }
+
 .center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* ==============================
+   Patient Card Specific Styles
+   ============================== */
+
+/* Patient Header */
+.patient-card .patient-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(4, 86, 193, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Patient Header Top - Contains name/email and toggle button */
+.patient-card .patient-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.patient-card .patient-info-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.patient-card .patient-header .patient-doctor {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0456c1;
+  letter-spacing: 0.3px;
+}
+
+.patient-card .patient-header .patient-email {
+  font-size: 0.9rem;
+  color: #1e99c3;
+  font-weight: 500;
+}
+
+.patient-card .patient-header .appointments-count {
+  font-size: 0.95rem;
+  color: #666;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.patient-card .patient-header .appointments-count span {
+  font-weight: 700;
+  color: #0456c1;
+  background: rgba(4, 86, 193, 0.08);
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin-left: 6px;
+}
+
+/* Toggle Arrow Button */
+.toggle-arrow {
+  background: transparent;
+  border: none;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #0456c1, #26c6da);
+}
+
+.toggle-arrow:hover {
+  opacity: 0.9;
+}
+
+.toggle-arrow .toggle-text {
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.toggle-arrow .arrow-icon {
+  color: #ffffff;
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+  display: inline-block;
+  transform: rotate(-90deg);
+  /* Default: collapsed (arrow points right) */
+}
+
+.toggle-arrow.expanded .arrow-icon {
+  transform: rotate(0deg);
+  /* Expanded: arrow points down */
+}
+
+/* Patient Appointments List - Column Layout with Slide Animation */
+.patient-appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+}
+
+/* Collapsed state */
+.patient-appointments-list.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  pointer-events: none;
+}
+
+/* Expanded state */
+.patient-appointments-list.expanded {
+  max-height: 5000px;
+  /* Large enough to accommodate all appointments */
+  opacity: 1;
+  margin-top: 0;
+  pointer-events: auto;
+}
+
+/* Individual Appointment Item */
+.appointment-item {
+  background: linear-gradient(135deg, #ffffff, #f9fcff);
+  border: 1px solid rgba(4, 86, 193, 0.12);
+  border-radius: 10px;
+  padding: 16px 18px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.appointment-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(4, 86, 193, 0.12);
+  border-color: rgba(4, 86, 193, 0.25);
+}
+
+/* Appointment Item Header */
+.appointment-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.appointment-item .appointment-date {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0456c1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.appointment-item .appointment-booked {
+  font-size: 0.85rem;
+  color: #1e99c3;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* Appointment Status Badge */
+.appointment-status {
+  font-size: 0.8rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Status Colors */
+.appointment-status.status-pending,
+.appointment-status.status-booked {
+  background: linear-gradient(90deg, #2e8b57, #3cb371);
+  color: #fff;
+}
+
+.appointment-status.status-confirmed {
+  background: linear-gradient(90deg, #0456c1, #26c6da);
+  color: #fff;
+}
+
+.appointment-status.status-completed {
+  background: linear-gradient(90deg, #0000FF, #4169e1);
+  color: #fff;
+}
+
+.appointment-status.status-cancelled {
+  background: linear-gradient(90deg, #9e9e9e, #757575);
+  color: #fff;
+}
+
+.appointment-status.status-rejected {
+  background: linear-gradient(90deg, #c0392b, #e74c3c);
+  color: #fff;
+}
+
+.appointment-status.status-no-show {
+  background: linear-gradient(90deg, #ff8c00, #ffa500);
+  color: #fff;
+}
+
+/* ==============================
+   Responsive Adjustments for Patient Cards
+   ============================== */
+
+/* Desktop - Keep current layout */
+@media screen and (min-width: 1024px) {
+  .patient-card .patient-header .patient-doctor {
+    font-size: 1.5rem;
+  }
+
+  .appointment-item {
+    padding: 18px 22px;
+  }
+
+  .appointment-item .appointment-date {
+    font-size: 1rem;
+  }
+}
+
+/* Tablets */
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  .patient-card .patient-header .patient-doctor {
+    font-size: 1.25rem;
+  }
+
+  .appointment-item-header {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+/* Mobile - Stack appointment header items */
+@media screen and (max-width: 767px) {
+  .patient-card .patient-header {
+    gap: 10px;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+  }
+
+  .patient-card .patient-header-top {
+    gap: 12px;
+    align-items: center;
+  }
+
+  .toggle-arrow {
+    padding: 5px 8px;
+    gap: 6px;
+  }
+
+  .toggle-arrow .toggle-text {
+    font-size: 0.85rem;
+  }
+
+  .toggle-arrow .arrow-icon {
+    font-size: 0.9rem;
+  }
+
+  .patient-card .patient-header .patient-doctor {
+    font-size: 1.15rem;
+  }
+
+  .patient-card .patient-header .patient-email {
+    font-size: 0.85rem;
+  }
+
+  .patient-card .patient-header .appointments-count {
+    font-size: 0.9rem;
+  }
+
+  .patient-appointments-list {
+    gap: 12px;
+  }
+
+  .appointment-item {
+    padding: 14px 16px;
+  }
+
+  .appointment-item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .appointment-item .appointment-date {
+    font-size: 0.9rem;
+  }
+
+  .appointment-item .appointment-booked {
+    font-size: 0.8rem;
+  }
+
+  .appointment-status {
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    align-self: flex-start;
+  }
+}
+
+/* Extra small mobile */
+@media screen and (max-width: 480px) {
+  .patient-card .patient-header .patient-doctor {
+    font-size: 1.1rem;
+  }
+
+  .appointment-item {
+    padding: 12px 14px;
+  }
+
+  .appointment-item .appointment-date {
+    font-size: 0.85rem;
+  }
+}
+
+/* ==============================
+   Feedback Modal
+   ============================== */
+/* ==============================
+   Feedback Modal (Enhanced)
+   ============================== */
+.feedback-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease;
+}
+
+.feedback-modal {
+  background: #fff;
+  padding: 35px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  text-align: center;
+}
+
+.feedback-modal h3 {
+  margin-top: 0;
+  color: #0456c1;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.feedback-modal p.subtitle {
+  color: #666;
+  margin-bottom: 25px;
+  font-size: 0.95rem;
+}
+
+.star-rating {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+  justify-content: center;
+}
+
+.star-rating span {
+  font-size: 2.5rem;
+  cursor: pointer;
+  color: #e0e0e0;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.star-rating span:hover,
+.star-rating span.active {
+  color: #ffb74d;
+  transform: scale(1.15);
+  text-shadow: 0 2px 10px rgba(255, 183, 77, 0.4);
+}
+
+.feedback-modal textarea {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #eef2f6;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  min-height: 120px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: border-color 0.2s;
+  background: #f8fbff;
+}
+
+.feedback-modal textarea:focus {
+  outline: none;
+  border-color: #0456c1;
+  background: #fff;
+}
+
+.feedback-modal-actions {
+  display: flex;
+  justify-content: stretch;
+  gap: 12px;
+}
+
+.feedback-modal-actions button {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.feedback-modal-actions .cancel-btn {
+  background: #f0f2f5;
+  color: #666;
+}
+
+.feedback-modal-actions .cancel-btn:hover {
+  background: #e4e6e9;
+}
+
+.feedback-modal-actions .submit-btn {
+  background: linear-gradient(135deg, #0456c1, #26c6da);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(4, 86, 193, 0.2);
+}
+
+.feedback-modal-actions .submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(4, 86, 193, 0.3);
+}
+
+/* Close Icon */
+.feedback-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #999;
+  cursor: pointer;
+  padding: 5px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.feedback-modal-close:hover {
+  color: #333;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px) scale(0.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Feedback Button Specific */
+.btn-feedback {
+  background: linear-gradient(135deg, #ffb74d 0%, #ff9800 100%) !important;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.25) !important;
+}
+
+.btn-feedback:hover {
+  box-shadow: 0 6px 16px rgba(255, 152, 0, 0.35) !important;
+  transform: translateY(-2px);
+}
+
+.hidden-feedback {
+  display: none !important;
+}
+
+/* ==============================
+   Grouped Appointments (Patient View)
+   ============================== */
+.doctor-appointment-group {
+  width: 100%;
+  max-width: 850px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(4, 86, 193, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.doctor-appointment-group:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+.doctor-group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(4, 86, 193, 0.08);
+  margin-bottom: 10px;
+}
+
+.doctor-group-name {
+  color: #0456c1;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.doctor-group-name::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 24px;
+  background: linear-gradient(180deg, #0456c1, #26c6da);
+  border-radius: 4px;
+}
+
+.doctor-group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  align-items: center;
+}
+
+/* Adjust card inside group to be less heavy since group has container */
+.doctor-group-list .appointment-card {
+  box-shadow: none;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: #fcfdfe;
+  padding: 20px 25px;
+}
+
+.doctor-group-list .appointment-card:hover {
+  transform: none;
+  background: #fff;
+  border-color: rgba(4, 86, 193, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Feedback Button Styling Override/Enhancement */
+.btn-feedback {
+  background: linear-gradient(90deg, #ffb74d, #ff9800);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-feedback:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+  background: linear-gradient(90deg, #ffa726, #f57c00);
 }

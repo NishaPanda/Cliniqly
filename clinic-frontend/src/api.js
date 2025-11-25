@@ -149,6 +149,13 @@ export async function fetchTestimonials() {
   return safeFetch(`${API_BASE}/testimonials`);
 }
 
+export async function fetchDoctorTestimonials(doctorId) {
+  if (USE_MOCK) return [
+    { _id: '1', patientName: 'John Doe', rating: 5, feedback: 'Excellent doctor!', createdAt: new Date().toISOString() }
+  ];
+  return safeFetch(`${API_BASE}/testimonials?doctorId=${doctorId}`);
+}
+
 export async function createTestimonial(data) {
   if (USE_MOCK) {
     const testimonial = { ...data, _id: String(Date.now()), patientName: 'You', createdAt: new Date().toISOString() };

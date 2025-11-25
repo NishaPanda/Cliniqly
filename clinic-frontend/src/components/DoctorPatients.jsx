@@ -16,6 +16,7 @@ dayjs.tz.setDefault('Asia/Kolkata');
 export default function DoctorPatients() {
   const [appts, setAppts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedPatients, setExpandedPatients] = useState({});
 
   useEffect(() => {
     setLoading(true);
@@ -70,7 +71,13 @@ export default function DoctorPatients() {
     return '—';
   }
 
-
+  // Toggle appointments visibility for a patient
+  const togglePatientExpanded = (patientId) => {
+    setExpandedPatients(prev => ({
+      ...prev,
+      [patientId]: !prev[patientId]
+    }));
+  };
 
   if (loading) return <div className="appointments-container no-appointments">Loading patients...</div>;
 
@@ -87,42 +94,44 @@ export default function DoctorPatients() {
   return (
     <div className="appointments-container">
       <h2>My Patients</h2>
-      {groupedPatients.map((patient, index) => (
-        <div
-          key={patient.patientId}
-          className="appointment-card"
-          style={{ animationDelay: `${index * 0.1}s` }}
-        >
-          <div className="appointment-info">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-              <div>
-                <div className="patient-doctor">{patient.patientName}</div>
-                <div style={{ marginTop: '10px', fontSize: '14px', color: '#666' }}>
-                  <strong>Appointments ({patient.appointments.length}):</strong>
+      {groupedPatients.map((patient, index) => {
+        const isExpanded = expandedPatients[patient.patientId];
+
+        return (
+          <div
+            key={patient.patientId}
+            className="appointment-card patient-card"
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            <div className="patient-header">
+              <div className="patient-header-top">
+                <div className="patient-info-section">
+                  <div className="patient-doctor">{patient.patientName}</div>
+                  <div className="patient-email">{patient.patientEmail}</div>
                 </div>
-                {patient.appointments.map((appointment, apptIndex) => (
-                  <div key={appointment._id} style={{
-                    marginTop: '8px',
-                    padding: '8px',
-                    border: '1px solid #eee',
-                    borderRadius: '4px',
-                    backgroundColor: '#f9f9f9'
-                  }}>
+                <button
+                  className={`toggle-arrow ${isExpanded ? 'expanded' : ''}`}
+                  onClick={() => togglePatientExpanded(patient.patientId)}
+                  aria-label={isExpanded ? 'Collapse appointments' : 'Expand appointments'}
+                >
+                  <span className="toggle-text">View All</span>
+                  <span className="arrow-icon">▼</span>
+                </button>
+              </div>
+              <div className="appointments-count">
+                Total Appointments: <span>{patient.appointments.length}</span>
+              </div>
+            </div>
+
+            <div className={`patient-appointments-list ${isExpanded ? 'expanded' : 'collapsed'}`}>
+              {patient.appointments.map((appointment, apptIndex) => (
+                <div key={appointment._id} className="appointment-item">
+                  <div className="appointment-item-header">
                     <div className="appointment-date">
-                      {formatAppointmentDateTime(appointment)}
+                      📅 {formatAppointmentDateTime(appointment)}
                     </div>
-                    <div className="appointment-booked">
-                      Booked: {dayjs(appointment.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm')}
-                    </div>
-                    <div style={{
-                      marginTop: '4px',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                      color: appointment.status === 'rejected' ? '#c0392b' :
-                        appointment.status === 'no-show' ? '#ffa500' :
-                          appointment.status === 'completed' ? '#0000FF' : '#2e8b57'
-                    }}>
-                      Status: {appointment.status === 'pending' ? 'Booked' :
+                    <div className={`appointment-status status-${appointment.status}`}>
+                      {appointment.status === 'pending' ? 'Booked' :
                         appointment.status === 'confirmed' ? 'Confirmed' :
                           appointment.status === 'completed' ? 'Completed' :
                             appointment.status === 'no-show' ? 'No-show' :
@@ -131,14 +140,15 @@ export default function DoctorPatients() {
                                   appointment.status}
                     </div>
                   </div>
-                ))}
-              </div>
+                  <div className="appointment-booked">
+                    🕒 Booked: {dayjs(appointment.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm')}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      ))}
-
-
+        );
+      })}
     </div>
   );
 }

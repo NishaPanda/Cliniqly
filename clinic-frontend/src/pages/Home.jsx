@@ -14,7 +14,7 @@ export default function Home() {
         <p className="small">
           Book doctor visits, view appointments and get receipts.
         </p>
-        <div style={{marginTop: 12}}>
+        <div style={{ marginTop: 12 }}>
           {user && user.role && String(user.role).toLowerCase() === 'doctor' ? (
             <Link to="/patients"><button>My Patients</button></Link>
           ) : (

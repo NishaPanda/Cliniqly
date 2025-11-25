@@ -218,6 +218,7 @@
 
 .patients-header {
   font-weight: 600;
+  color: #0a3c4d;
   padding: 6px 8px;
   border-bottom: 1px solid #b2dfdb;
 }
@@ -237,12 +238,12 @@
 
 .patient-name {
   font-size: clamp(13px, 1.4vw, 16px);
-  color: #004d40;
+  color: #197696;
 }
 
 .patient-time {
   font-size: clamp(11px, 1.2vw, 14px);
-  color: #00695c;
+  color: #1e99c3;
 }
 
 .patients-footer {
