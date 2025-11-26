@@ -85,7 +85,7 @@ export default function DoctorPatients() {
     }));
   };
 
-  if (loading) return <div className="appointments-container no-appointments">Loading patients...</div>;
+  if (loading) return <div className="loading-text">Loading patients...</div>;
 
   if (!appts.length)
     return (

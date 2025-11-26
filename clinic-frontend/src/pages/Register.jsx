@@ -67,7 +67,7 @@ export default function Register() {
       <h2>Register</h2>
       <form onSubmit={handleRegister} className="register-form">
         <label>
-          Role:
+          <span>Role:<span className="required">*</span></span>
           <select value={role} onChange={(e) => setRole(e.target.value)}>
             <option value="patient">Patient</option>
             <option value="doctor">Doctor</option>
@@ -75,29 +75,29 @@ export default function Register() {
         </label>
 
         <label>
-          Name:
+          <span>Name:<span className="required">*</span></span>
           <input type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} required />
         </label>
 
         <label>
-          Email:
+          <span>Email:<span className="required">*</span></span>
           <input type="email" value={email} placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)} required />
         </label>
 
         <label>
-          Password:
+          <span>Password:<span className="required">*</span></span>
           <input type="password" value={password} placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} required />
         </label>
 
         {role === "doctor" && (
           <>
             <label>
-              Specialization:
+              <span>Specialization:<span className="required">*</span></span>
               <input type="text" value={specialization} placeholder="Enter your specialization" onChange={(e) => setSpecialization(e.target.value)} required />
             </label>
 
             <label>
-              Phone Number (Optional):
+              Phone Number:
               <input
                 type="number"
                 value={phoneNumber}
@@ -113,17 +113,17 @@ export default function Register() {
             </label>
 
             <label>
-              Clinic Name:
+              <span>Clinic Name:<span className="required">*</span></span>
               <input type="text" value={clinicName} placeholder="Enter your clinic name" onChange={(e) => setClinicName(e.target.value)} required />
             </label>
 
             <label>
-              Clinic Address:
+              <span>Clinic Address:<span className="required">*</span></span>
               <input type="text" value={clinicAddress} placeholder="Enter your clinic address" onChange={(e) => setClinicAddress(e.target.value)} required />
             </label>
 
             <label>
-              Doctor ID:
+              <span>Doctor ID:<span className="required">*</span></span>
               <input
                 type="number"
                 value={doctorId}
@@ -144,11 +144,11 @@ export default function Register() {
         {role === "patient" && (
           <div className="register-row">
             <label>
-              Age:
+              <span>Age:<span className="required">*</span></span>
               <input type="number" value={age} placeholder="Enter your age" onChange={(e) => setAge(e.target.value)} required />
             </label>
             <label>
-              Gender:
+              <span>Gender:<span className="required">*</span></span>
               <select value={gender} onChange={(e) => setGender(e.target.value)} required>
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>

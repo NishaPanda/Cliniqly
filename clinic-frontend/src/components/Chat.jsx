@@ -25,12 +25,12 @@ const Chat = ({ isOpen, onClose, otherUserId, otherUserName }) => {
 
   // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, loading, isOpen]);
+  }, [messages, loading, isOpen, otherUserTyping]);
 
   // Initialize socket connection
   useEffect(() => {

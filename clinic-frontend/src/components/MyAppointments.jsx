@@ -54,6 +54,15 @@ export default function MyAppointments() {
       });
       toast.success('Thank you for your feedback!');
       setFeedbackModalOpen(false);
+
+      // Reload appointments to update the hasFeedback flag
+      if (user.role === 'doctor') {
+        const newAppts = await fetchDoctorAppointments();
+        setAppts(newAppts || []);
+      } else {
+        const newAppts = await fetchAppointments();
+        setAppts(newAppts || []);
+      }
     } catch (err) {
       console.error('Feedback error', err);
       toast.error('Failed to submit feedback: ' + (err.message || 'Unknown error'));
@@ -409,7 +418,7 @@ export default function MyAppointments() {
   );
 
 
-  if (loading) return <div className="appointments-container no-appointments">Loading appointments...</div>;
+  if (loading) return <div className="loading-text">Loading appointments...</div>;
 
   if (!appts.length)
     return (

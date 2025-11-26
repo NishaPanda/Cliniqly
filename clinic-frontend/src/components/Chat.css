@@ -32,7 +32,7 @@
 .chat-header h3 {
   margin: 0;
   font-size: 1.1rem;
-  
+
 }
 
 .chat-close-btn {
@@ -45,9 +45,11 @@
 
 .chat-messages {
   flex: 1;
-  padding: 15px 20px;
+  padding: 15px 20px 20px 20px;
   overflow-y: auto;
   max-height: 400px;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-loading,
@@ -152,6 +154,10 @@
   color: #666;
   padding: 8px 12px;
   font-size: 14px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  min-height: 20px;
+  flex-shrink: 0;
 }
 
 .chat-input-form {
@@ -193,5 +199,6 @@
 
   .chat-messages {
     max-height: 300px;
+    padding-bottom: 15px;
   }
 }

@@ -37,9 +37,9 @@ export default function Receipt() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <div className="receipt-card">Loading receipt...</div>;
-  if (error) return <div className="receipt-card">Error: {error}</div>;
-  if (!appt) return <div className="receipt-card">Appointment not found.</div>;
+  if (loading) return <div className="loading-text">Loading receipt...</div>;
+  if (error) return <div className="loading-text">Error: {error}</div>;
+  if (!appt) return <div className="loading-text">Appointment not found.</div>;
 
   // Resolve doctor info if available
   const doctorFromList = doctors.find(d =>

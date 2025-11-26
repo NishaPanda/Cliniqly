@@ -68,7 +68,7 @@ export default function DoctorList() {
     navigate(`/doctor/${doctorId}`);
   };
 
-  if (loading) return <div className="">Loading doctors...</div>;
+  if (loading) return <div className="loading-text">Loading doctors...</div>;
 
   return (
     <div className="doctor-container">

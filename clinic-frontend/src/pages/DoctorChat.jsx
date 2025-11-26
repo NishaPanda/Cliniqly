@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config';
 import Chat from '../components/Chat';
@@ -15,6 +15,7 @@ export default function DoctorChat() {
     const [chatModal, setChatModal] = useState({ isOpen: false, patientId: null, patientName: '' });
 
     const location = useLocation();
+    const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
     // Fetch participants on mount
@@ -28,9 +29,11 @@ export default function DoctorChat() {
             const patient = participants.find(p => p._id === location.state.selectedPatientId);
             if (patient) {
                 handleOpenChat(patient._id, patient.name);
+                // Clear state to prevent reopening on updates
+                navigate(location.pathname, { replace: true, state: {} });
             }
         }
-    }, [location.state, participants]);
+    }, [location.state, participants, navigate, location.pathname]);
 
     const fetchParticipants = async () => {
         try {
