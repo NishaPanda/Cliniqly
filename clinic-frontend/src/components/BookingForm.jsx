@@ -6,7 +6,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import "./booking.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8080/api";
+import { API_BASE } from "../config";
 const IST_OFFSET_MS = (5 * 60 + 30) * 60 * 1000; // IST = UTC+5:30
 
 function utcNowMs() {

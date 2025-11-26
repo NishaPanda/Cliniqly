@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import axios from 'axios';
-import { API_BASE } from '../config';
+import { API_BASE, SOCKET_URL } from '../config';
 import './Chat.css';
 
 const Chat = ({ isOpen, onClose, otherUserId, otherUserName }) => {
@@ -35,7 +35,7 @@ const Chat = ({ isOpen, onClose, otherUserId, otherUserName }) => {
   // Initialize socket connection
   useEffect(() => {
     if (isOpen && currentUserId) {
-      socketRef.current = io('http://localhost:8080', {
+      socketRef.current = io(SOCKET_URL, {
         auth: { token }
       });
 
