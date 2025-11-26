@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Testimonials from '../components/Testimonials';
-import './Home.css';
+import './home.css';
 
 export default function Home() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');

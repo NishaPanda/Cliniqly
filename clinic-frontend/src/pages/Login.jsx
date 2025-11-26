@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE } from '../config';
-import "./Login.css";
+import "./login.css";
 
 export default function Login() {
   const navigate = useNavigate();
