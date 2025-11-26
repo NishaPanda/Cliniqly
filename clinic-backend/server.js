@@ -19,15 +19,24 @@ connectDB();
 
 const app = express();
 const server = http.createServer(app);
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://cliniqlyyy.vercel.app"
+];
+
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:5173", // Frontend URL
-    methods: ["GET", "POST"]
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 
 // Handle preflight OPTIONS requests
 
@@ -43,7 +52,7 @@ app.use('/api/testimonials', testimonialRoutes);
 
 // Simple route for testing
 app.get('/', (req, res) => {
-    res.send('API is running...');
+  res.send('API is running...');
 });
 
 // Socket.IO connection handling
