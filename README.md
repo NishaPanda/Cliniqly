@@ -1,4 +1,4 @@
-# Clinic Appointment Scheduler
+# CLINIQLY - Clinic Appointment Scheduler
 
 A comprehensive web application designed to streamline the process of booking doctor appointments and facilitating communication between patients and doctors.
 
