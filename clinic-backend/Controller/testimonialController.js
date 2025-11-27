@@ -27,8 +27,8 @@ exports.createTestimonial = async (req, res) => {
     const { rating, feedback, doctorId, appointmentId } = req.body;
     const patientId = req.user.id;
 
-    if (!rating || !feedback || !doctorId) {
-      return res.status(400).json({ message: "Rating, feedback and doctorId are required" });
+    if (!rating || !feedback) {
+      return res.status(400).json({ message: "Rating and feedback are required" });
     }
 
     if (rating < 1 || rating > 5) {
@@ -48,15 +48,20 @@ exports.createTestimonial = async (req, res) => {
       }
     }
 
-    const testimonial = new Testimonial({
+    const testimonialData = {
       patient: patientId,
-      doctor: doctorId,
       appointmentId,
       patientName: patient.name,
       rating,
       feedback,
       verified: true
-    });
+    };
+
+    if (doctorId) {
+      testimonialData.doctor = doctorId;
+    }
+
+    const testimonial = new Testimonial(testimonialData);
 
     await testimonial.save();
     res.status(201).json({ message: "Testimonial created successfully", testimonial });
