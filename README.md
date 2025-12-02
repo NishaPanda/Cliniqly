@@ -118,10 +118,4 @@ clinic-appointment/
 - **/api/chat**: Chat history and messaging.
 - **/api/testimonials**: Managing doctor reviews.
 
-## 🤝 Contributing
 
-Contributions are welcome! Please fork the repository and submit a pull request.
-
-## 📄 License
-
-This project is licensed under the ISC License.
